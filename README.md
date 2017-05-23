@@ -5,6 +5,9 @@ This is an example of doing reactive MicroServices using spring 5 functional web
 
 This is a fork of the [original java version](https://github.com/LearningByExample/reactive-ms-example).
 
+## W.I.P.
+There is much code to be donde to match the original java implementation
+
 ## Sample requests
 
 Get hello
