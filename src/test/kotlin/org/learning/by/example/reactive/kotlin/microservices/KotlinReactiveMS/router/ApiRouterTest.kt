@@ -15,9 +15,7 @@ class ApiRouterTest : IntegrationTest(){
     lateinit var apiRouter : ApiRouter
 
     @Before
-    fun setup(){
-        bindToRouterFunction(apiRouter.doRoute())
-    }
+    fun setup() = bindToRouterFunction(apiRouter.doRoute())
 
     @Test
     fun getHello(){
