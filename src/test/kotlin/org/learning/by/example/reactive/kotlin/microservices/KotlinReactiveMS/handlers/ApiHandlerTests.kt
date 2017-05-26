@@ -24,6 +24,7 @@ class ApiHandlerTests : UnitTest() {
 
         serverResponseMono.subscribe {
             assert.that(it.statusCode(), equalTo(HttpStatus.OK))
+
             val helloResponse: HelloResponse = it.extractEntity()
             assert.that(helloResponse.hello, equalTo("world"))
         }
