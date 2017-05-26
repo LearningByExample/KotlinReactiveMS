@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 
 internal abstract class BasicIntegrationTest {
 
-    var webTestClient: WebTestClient? = null
+    lateinit var webTestClient: WebTestClient
 
     protected fun bindToRouterFunction(router: RouterFunction<*>) {
         this.webTestClient = WebTestClient.bindToRouterFunction(router).build()
@@ -19,7 +19,7 @@ internal abstract class BasicIntegrationTest {
     }
 
     fun <T : Any> get(url: String, httpStatus: HttpStatus = HttpStatus.OK, type: KClass<T>) =
-            webTestClient?.get()
+            webTestClient.get()
                     ?.uri(url)
                     ?.accept(MediaType.APPLICATION_JSON_UTF8)
                     ?.exchange()
