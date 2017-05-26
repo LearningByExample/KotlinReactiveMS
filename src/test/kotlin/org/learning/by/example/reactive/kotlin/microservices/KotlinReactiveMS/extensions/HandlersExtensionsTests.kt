@@ -10,11 +10,11 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 
-@DisplayName("HandlersExtensions Unit Tests")
 @UnitTest
-private class HandlersExtensionsTests : BasicIntegrationTest(){
+@DisplayName("HandlersExtensions Unit Tests")
+private class HandlersExtensionsTests : BasicIntegrationTest() {
 
-    private data class SimpleObject (val text : String, val number : Int)
+    private data class SimpleObject(val text: String, val number: Int)
 
     private companion object {
         const val TEXT = "text"
@@ -29,7 +29,7 @@ private class HandlersExtensionsTests : BasicIntegrationTest(){
         serverResponseMono.subscribe {
             assert.that(it.headers().contentType, equalTo(APPLICATION_JSON_UTF8))
 
-            val simpleObject : SimpleObject = it.extractEntity()
+            val simpleObject: SimpleObject = it.extractEntity()
             assert.that(simpleObject.text, equalTo(TEXT))
             assert.that(simpleObject.number, equalTo(NUMBER))
         }

@@ -5,7 +5,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.mo
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 
-class ApiHandler {
+internal class ApiHandler {
 
     fun getHello(req: ServerRequest) = ok() with HelloResponse("world")
 }

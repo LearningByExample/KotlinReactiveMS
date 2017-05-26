@@ -8,7 +8,7 @@ import org.springframework.web.reactive.config.EnableWebFlux
 
 @Configuration
 @EnableWebFlux
-class ApplicationConfig {
+internal class ApplicationConfig {
 
     @Bean
     fun apiHandler() = ApiHandler()

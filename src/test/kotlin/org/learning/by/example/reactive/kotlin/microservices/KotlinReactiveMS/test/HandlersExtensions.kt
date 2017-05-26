@@ -5,5 +5,5 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> ServerResponse.extractEntity() =
+internal fun <T : Any> ServerResponse.extractEntity() =
         (this as EntityResponse<Mono<T>>).entity().block()!!

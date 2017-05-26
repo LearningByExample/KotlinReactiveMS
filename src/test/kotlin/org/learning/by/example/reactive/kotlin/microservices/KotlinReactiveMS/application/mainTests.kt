@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 
-@DisplayName("main Unit Tests")
 @UnitTest
-private class mainTests : BasicIntegrationTest(){
+@DisplayName("main Unit Tests")
+private class mainTests : BasicIntegrationTest() {
 
     @Test
     fun mainTest() {

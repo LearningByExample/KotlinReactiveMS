@@ -10,8 +10,9 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.SystemTest
 import org.springframework.boot.web.server.LocalServerPort
 
-@DisplayName("KotlinReactiveMsApplication System Tests")
+
 @SystemTest
+@DisplayName("KotlinReactiveMsApplication System Tests")
 private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
 
     @LocalServerPort
@@ -21,8 +22,8 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
     fun setup() = bindToPort(port)
 
     @Test
-    fun apiGet(){
-        val helloResponse = get( url = "/api/hello", type = HelloResponse::class)
+    fun apiGet() {
+        val helloResponse = get(url = "/api/hello", type = HelloResponse::class)
         assert.that(helloResponse.hello, equalTo("world"))
     }
 }

@@ -9,5 +9,5 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @Tag("SystemTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = arrayOf(KotlinReactiveMsApplication::class))
-@ExtendWith(SpringExtension::class) internal
-annotation class SystemTest
+@ExtendWith(SpringExtension::class)
+internal annotation class SystemTest

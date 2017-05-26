@@ -8,5 +8,5 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @Tag("UnitTest")
 @SpringBootTest(classes = arrayOf(KotlinReactiveMsApplication::class))
-@ExtendWith(SpringExtension::class) internal
-annotation class UnitTest
+@ExtendWith(SpringExtension::class)
+internal annotation class UnitTest

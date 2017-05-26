@@ -5,7 +5,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
 
 
-class ApiRouter(val handler : ApiHandler) {
+internal class ApiRouter(val handler : ApiHandler) {
 
     private companion object {
         const private val API_PATH = "/api"

@@ -11,19 +11,19 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.IntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 
-@DisplayName("ApiRouter Integration Tests")
 @IntegrationTest
-private class ApiRouterTest : BasicIntegrationTest(){
+@DisplayName("ApiRouter Integration Tests")
+private class ApiRouterTest : BasicIntegrationTest() {
 
     @Autowired
-    lateinit var apiRouter : ApiRouter
+    lateinit var apiRouter: ApiRouter
 
     @BeforeEach
     fun setup() = bindToRouterFunction(apiRouter.doRoute())
 
     @Test
-    fun getHello(){
-        val helloResponse = get( url = "/api/hello", type = HelloResponse::class)
+    fun getHello() {
+        val helloResponse = get(url = "/api/hello", type = HelloResponse::class)
         assert.that(helloResponse.hello, equalTo("world"))
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
 
-@DisplayName("ApiHandler Unit Tests")
 @UnitTest
+@DisplayName("ApiHandler Unit Tests")
 private class ApiHandlerTests : BasicIntegrationTest() {
 
     @Autowired

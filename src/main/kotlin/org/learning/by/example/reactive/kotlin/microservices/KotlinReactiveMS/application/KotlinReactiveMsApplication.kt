@@ -3,4 +3,4 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.a
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
-class KotlinReactiveMsApplication
+internal class KotlinReactiveMsApplication

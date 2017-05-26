@@ -6,7 +6,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.server.RouterFunction
 import kotlin.reflect.KClass
 
-abstract class BasicIntegrationTest {
+internal abstract class BasicIntegrationTest {
 
     var webTestClient: WebTestClient? = null
 
