@@ -2,15 +2,23 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.a
 
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.equalTo
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.HelloResponse
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.SystemTest
+import org.springframework.boot.web.server.LocalServerPort
 
-class KotlinReactiveMsApplicationTests : SystemTest() {
+@DisplayName("KotlinReactiveMsApplication System Tests")
+@SystemTest
+private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
 
-    @Before
-    fun setup() = bindToServer()
+    @LocalServerPort
+    var port: Int = 0
+
+    @BeforeEach
+    fun setup() = bindToPort(port)
 
     @Test
     fun apiGet(){

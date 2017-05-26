@@ -2,19 +2,23 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.r
 
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.equalTo
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.HelloResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers.ApiRouter
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.IntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 
-class ApiRouterTest : IntegrationTest(){
+@DisplayName("ApiRouter Integration Tests")
+@IntegrationTest
+private class ApiRouterTest : BasicIntegrationTest(){
 
     @Autowired
     lateinit var apiRouter : ApiRouter
 
-    @Before
+    @BeforeEach
     fun setup() = bindToRouterFunction(apiRouter.doRoute())
 
     @Test

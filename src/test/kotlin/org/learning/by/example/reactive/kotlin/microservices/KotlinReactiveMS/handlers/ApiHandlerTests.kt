@@ -3,15 +3,19 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.h
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.equalTo
 import com.nhaarman.mockito_kotlin.mock
-import org.junit.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.HelloResponse
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.extractEntity
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
 
-class ApiHandlerTests : UnitTest() {
+@DisplayName("ApiHandler Unit Tests")
+@UnitTest
+private class ApiHandlerTests : BasicIntegrationTest() {
 
     @Autowired
     lateinit var apiHandler: ApiHandler

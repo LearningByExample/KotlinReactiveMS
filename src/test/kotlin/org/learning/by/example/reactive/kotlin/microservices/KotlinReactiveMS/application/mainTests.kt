@@ -1,13 +1,13 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.application
 
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 
-@RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(ApplicationConfig::class))
-class mainTests {
+@DisplayName("main Unit Tests")
+@UnitTest
+private class mainTests : BasicIntegrationTest(){
 
     @Test
     fun mainTest() {

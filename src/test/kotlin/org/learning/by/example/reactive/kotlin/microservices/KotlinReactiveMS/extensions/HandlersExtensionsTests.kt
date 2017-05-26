@@ -2,13 +2,17 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.e
 
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.equalTo
-import org.junit.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.extractEntity
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 
-class HandlersExtensionsTests : UnitTest(){
+@DisplayName("HandlersExtensions Unit Tests")
+@UnitTest
+private class HandlersExtensionsTests : BasicIntegrationTest(){
 
     private data class SimpleObject (val text : String, val number : Int)
 
