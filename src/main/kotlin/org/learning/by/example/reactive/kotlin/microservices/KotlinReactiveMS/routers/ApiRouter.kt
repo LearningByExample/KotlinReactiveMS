@@ -7,9 +7,9 @@ import org.springframework.web.reactive.function.server.router
 
 class ApiRouter(val handler : ApiHandler) {
 
-    companion object {
-        val API_PATH = "/api"
-        val HELLO_PATH = "/hello"
+    private companion object {
+        const private val API_PATH = "/api"
+        const private val HELLO_PATH = "/hello"
     }
 
     fun doRoute() = router {
