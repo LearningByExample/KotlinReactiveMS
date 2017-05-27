@@ -21,13 +21,13 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
         const val ADDRESS_NOT_FOUND = "address not found"
     }
 
-    override fun fromAddress(addressMono: Mono<String>): Mono<GeographicCoordinates> =
+    override fun fromAddress(addressMono: Mono<String>) =
             addressMono
                     .transform(this::buildUrl)
                     .transform(this::get)
-                    .transform(this::geometryLocation)
+                    .transform(this::geometryLocation)!!
 
-    internal fun buildUrl(addressMono: Mono<String>): Mono<String> =
+    internal fun buildUrl(addressMono: Mono<String>) =
             addressMono.flatMap {
                 if (it == "") {
                     Mono.error(InvalidParametersException(MISSING_ADDRESS))
@@ -35,7 +35,7 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
                     Mono.just(endPoint + ADDRESS_PARAMETER + it)
             }
 
-    internal fun get(urlMono: Mono<String>): Mono<GeoLocationResponse> =
+    internal fun get(urlMono: Mono<String>) =
             urlMono.flatMap {
                 webClient.get()
                         .uri(it)
