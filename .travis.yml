@@ -3,10 +3,14 @@ jdk:
   - oraclejdk8
 before_install:
  - chmod +x mvnw
-script: "mvnw cobertura:cobertura"
+script: "./mvnw cobertura:cobertura"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 branches:
   only:
   - master
   - develop
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
