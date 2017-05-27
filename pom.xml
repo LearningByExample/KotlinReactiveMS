@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>KotlinReactiveMS</name>
-	<description>Demo project for Spring Boot</description>
+	<description>This is an example of doing reactive MicroServices using spring 5 functional web framework and spring boot 2 using Kotlin</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
