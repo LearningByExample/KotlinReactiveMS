@@ -3,6 +3,7 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.s
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GeoLocationNotFoundException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetGeoLocationException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.InvalidParametersException
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoLocationResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.springframework.http.MediaType
@@ -25,13 +26,13 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
             addressMono
                     .transform(this::buildUrl)
                     .transform(this::get)
-                    .onErrorResume { Mono.error(GetGeoLocationException(ERROR_GETTING_LOCATION, it)) }
+                    .onErrorResume { GetGeoLocationException(ERROR_GETTING_LOCATION, it).toMono() }
                     .transform(this::geometryLocation)!!
 
     internal fun buildUrl(addressMono: Mono<String>) =
             addressMono.flatMap {
                 if (it == "") Mono.error(InvalidParametersException(MISSING_ADDRESS))
-                else Mono.just(endPoint + ADDRESS_PARAMETER + it)
+                else (endPoint + ADDRESS_PARAMETER + it).toMono()
             }
 
     internal fun get(urlMono: Mono<String>) =
@@ -46,9 +47,9 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
     internal fun geometryLocation(geoLocationResponseMono: Mono<GeoLocationResponse>) =
             geoLocationResponseMono.flatMap {
                 when (it.status) {
-                    OK_STATUS -> with(it.results[0].geometry.location) { Mono.just(GeographicCoordinates(lat, lng)) }
-                    ZERO_RESULTS -> Mono.error(GeoLocationNotFoundException(ADDRESS_NOT_FOUND))
-                    else -> Mono.error(GetGeoLocationException(ERROR_GETTING_LOCATION))
+                    OK_STATUS -> with(it.results[0].geometry.location) { GeographicCoordinates(lat, lng).toMono() }
+                    ZERO_RESULTS -> GeoLocationNotFoundException(ADDRESS_NOT_FOUND).toMono()
+                    else -> GetGeoLocationException(ERROR_GETTING_LOCATION).toMono()
                 }
             }
 }
