@@ -10,7 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
-internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebClient = WebClient.create())
+open internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebClient = WebClient.create())
     : GeoLocationService {
 
     private companion object {
@@ -29,22 +29,22 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
                     .onErrorResume { GetGeoLocationException(ERROR_GETTING_LOCATION, it).toMono() }
                     .transform(this::geometryLocation)!!
 
-    internal fun buildUrl(addressMono: Mono<String>) =
+    open internal fun buildUrl(addressMono: Mono<String>) =
             addressMono.flatMap {
                 if (it == "") Mono.error(InvalidParametersException(MISSING_ADDRESS))
                 else (endPoint + ADDRESS_PARAMETER + it).toMono()
             }
 
-    internal fun get(urlMono: Mono<String>) =
+    open internal fun get(urlMono: Mono<String>) =
             urlMono.flatMap {
                 webClient.get()
                         .uri(it)
                         .accept(MediaType.APPLICATION_JSON)
                         .exchange()
                         .flatMap { it.bodyToMono(GeoLocationResponse::class.java) }
-            }
+            }!!
 
-    internal fun geometryLocation(geoLocationResponseMono: Mono<GeoLocationResponse>) =
+    open internal fun geometryLocation(geoLocationResponseMono: Mono<GeoLocationResponse>) =
             geoLocationResponseMono.flatMap {
                 when (it.status) {
                     OK_STATUS -> with(it.results[0].geometry.location) { GeographicCoordinates(lat, lng).toMono() }
