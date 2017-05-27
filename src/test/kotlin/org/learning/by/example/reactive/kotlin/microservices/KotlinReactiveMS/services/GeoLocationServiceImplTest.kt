@@ -14,6 +14,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.mo
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.getMonoFromJsonPath
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.isNull
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.mockWebClient
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.boot.test.mock.mockito.SpyBean
 import reactor.core.publisher.Mono
@@ -44,6 +45,21 @@ internal class GeoLocationServiceImplTest {
 
     @SpyBean(GeoLocationService::class)
     lateinit var geoLocationServiceImpl: GeoLocationServiceImpl
+
+
+    @Test
+    fun getMockingWebClientTest() {
+
+        geoLocationServiceImpl.webClient = mockWebClient(geoLocationServiceImpl.webClient, LOCATION_OK)
+
+        val geoLocationResponse = GOOGLE_ADDRESS_MONO
+                .transform(geoLocationServiceImpl::buildUrl)
+                .transform(geoLocationServiceImpl::get).block()
+
+        assert.that(geoLocationResponse.status, equalTo(OK_STATUS))
+
+        reset(geoLocationServiceImpl.webClient)
+    }
 
     @Test
     fun fromAddressTest() {
@@ -185,22 +201,5 @@ internal class GeoLocationServiceImplTest {
 
         assert.that(url, isNull())
     }
-
-    @Test
-    fun getTest() {
-        doReturn(LOCATION_OK).whenever(geoLocationServiceImpl).get(any())
-
-        val geoLocationResponse = GOOGLE_ADDRESS_MONO
-                .transform(geoLocationServiceImpl::buildUrl)
-                .transform(geoLocationServiceImpl::get).block()
-
-        assert.that(geoLocationResponse.status, equalTo(OK_STATUS))
-
-        with(geoLocationResponse.results[0].geometry.location) {
-            assert.that(lat, equalTo(GOOGLE_LAT))
-            assert.that(lng, equalTo(GOOGLE_LNG))
-        }
-
-        reset(geoLocationServiceImpl)
-    }
 }
+

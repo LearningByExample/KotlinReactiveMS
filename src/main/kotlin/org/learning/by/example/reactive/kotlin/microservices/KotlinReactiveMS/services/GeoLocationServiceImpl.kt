@@ -10,7 +10,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
-open internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebClient = WebClient.create())
+open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: WebClient = WebClient.create())
     : GeoLocationService {
 
     private companion object {
