@@ -25,6 +25,7 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
             addressMono
                     .transform(this::buildUrl)
                     .transform(this::get)
+                    .onErrorResume { Mono.error(GetGeoLocationException(ERROR_GETTING_LOCATION, it)) }
                     .transform(this::geometryLocation)!!
 
     internal fun buildUrl(addressMono: Mono<String>) =
