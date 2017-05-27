@@ -5,6 +5,7 @@ This is an example of doing reactive MicroServices using spring 5 functional web
 
 This is a fork of the [original java version](https://github.com/LearningByExample/reactive-ms-example).
 
+[![Build Status](https://travis-ci.org/LearningByExample/KotlinReactiveMS.svg?branch=master)](https://travis-ci.org/LearningByExample/KotlinReactiveMS)
 ## W.I.P.
 There is much code to be done to match the original java implementation
 
