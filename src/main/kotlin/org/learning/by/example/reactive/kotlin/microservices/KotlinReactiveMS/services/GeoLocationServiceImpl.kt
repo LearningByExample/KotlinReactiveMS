@@ -29,10 +29,8 @@ internal class GeoLocationServiceImpl(val endPoint: String, val webClient: WebCl
 
     internal fun buildUrl(addressMono: Mono<String>) =
             addressMono.flatMap {
-                if (it == "") {
-                    Mono.error(InvalidParametersException(MISSING_ADDRESS))
-                } else
-                    Mono.just(endPoint + ADDRESS_PARAMETER + it)
+                if (it == "") Mono.error(InvalidParametersException(MISSING_ADDRESS))
+                else Mono.just(endPoint + ADDRESS_PARAMETER + it)
             }
 
     internal fun get(urlMono: Mono<String>) =
