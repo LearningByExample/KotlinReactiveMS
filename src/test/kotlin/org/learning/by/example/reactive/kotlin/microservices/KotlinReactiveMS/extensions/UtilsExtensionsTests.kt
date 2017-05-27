@@ -27,10 +27,10 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
     @Test
     fun toMonoTest() {
 
-        SIMPLE_OBJECT.toMono().subscribe({
+        SIMPLE_OBJECT.toMono().subscribe {
             assert.that(it.text, equalTo(TEXT))
             assert.that(it.number, equalTo(NUMBER))
-        })
+        }
     }
 
     @Test
@@ -38,34 +38,36 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
 
         val message : Mono<String> = RuntimeException(TEXT).toMono()
 
-        message.onErrorResume({
+        message.onErrorResume {
             assert.that(it, isA<RuntimeException>())
             assert.that(it.message, equalTo(TEXT))
             Mono.empty()
-        }).block()
+        }.block()
     }
 
     @Test
     fun withBodyTest() {
         val serverResponseMono = ok() withBody SIMPLE_OBJECT
 
-        serverResponseMono.subscribe({
+        serverResponseMono.subscribe {
             assert.that(it.headers().contentType, equalTo(APPLICATION_JSON_UTF8))
 
             val simpleObject: SimpleObject = it.extractEntity()
             assert.that(simpleObject.text, equalTo(TEXT))
             assert.that(simpleObject.number, equalTo(NUMBER))
-        })
+        }
     }
 
     @Test
     fun toBodyTest() {
         val serverResponseMono = ok().toBody(SIMPLE_OBJECT)
 
-        serverResponseMono.subscribe({
+        serverResponseMono.subscribe {
+
             val simpleObject: SimpleObject = it.extractEntity()
             assert.that(simpleObject.text, equalTo(TEXT))
             assert.that(simpleObject.number, equalTo(NUMBER))
-        })
+        }
     }
+
 }
