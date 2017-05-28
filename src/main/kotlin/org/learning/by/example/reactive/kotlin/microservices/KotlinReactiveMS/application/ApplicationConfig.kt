@@ -16,7 +16,8 @@ import org.springframework.web.reactive.config.EnableWebFlux
 internal class ApplicationConfig {
 
     @Bean
-    internal fun apiHandler() = ApiHandler()
+    internal fun apiHandler(geoLocationService: GeoLocationService, sunsetService: SunriseSunsetService) =
+            ApiHandler(geoLocationService, sunsetService)
 
     @Bean
     internal fun apiRouter(apiHandler: ApiHandler) = ApiRouter(apiHandler)
