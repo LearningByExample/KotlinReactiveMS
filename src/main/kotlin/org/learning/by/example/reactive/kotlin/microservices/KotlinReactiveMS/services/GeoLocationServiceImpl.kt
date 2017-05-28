@@ -14,7 +14,6 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
     : GeoLocationService {
 
     private companion object {
-        const val ADDRESS_PARAMETER = "?address="
         const val MISSING_ADDRESS = "missing address"
         const val OK_STATUS = "OK"
         const val ZERO_RESULTS = "ZERO_RESULTS"
@@ -31,8 +30,8 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
 
     open internal fun buildUrl(addressMono: Mono<String>) =
             addressMono.flatMap {
-                if (it == "") Mono.error(InvalidParametersException(MISSING_ADDRESS))
-                else (endPoint + ADDRESS_PARAMETER + it).toMono()
+                if (it != "") (endPoint + "?address=$it").toMono()
+                else InvalidParametersException(MISSING_ADDRESS).toMono()
             }
 
     open internal fun get(urlMono: Mono<String>) =
