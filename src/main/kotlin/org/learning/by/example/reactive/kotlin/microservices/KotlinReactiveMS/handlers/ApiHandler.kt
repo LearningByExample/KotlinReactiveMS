@@ -21,12 +21,12 @@ internal class ApiHandler(val geoLocationService: GeoLocationService, val sunris
                     .transform(this::buildResponse)
                     .transform(this::serverResponse)!!
 
-    private fun buildResponse(address: Mono<String>)
+    internal fun buildResponse(address: Mono<String>)
             = address.transform(geoLocationService::fromAddress).and(this::sunriseSunset, ::LocationResponse)
 
-    private fun sunriseSunset(geographicCoordinates: GeographicCoordinates)
+    internal fun sunriseSunset(geographicCoordinates: GeographicCoordinates)
             = geographicCoordinates.toMono().transform(sunriseSunsetService::fromGeographicCoordinates)
 
-    private fun serverResponse(address: Mono<LocationResponse>): Mono<ServerResponse>
+    internal fun serverResponse(address: Mono<LocationResponse>): Mono<ServerResponse>
             = address.flatMap { ok() withBody it }
 }
