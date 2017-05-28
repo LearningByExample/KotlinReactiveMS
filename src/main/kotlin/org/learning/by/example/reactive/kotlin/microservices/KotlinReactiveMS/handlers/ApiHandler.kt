@@ -14,12 +14,12 @@ import reactor.core.publisher.Mono
 
 internal class ApiHandler(val geoLocationService: GeoLocationService, val sunriseSunsetService: SunriseSunsetService) {
 
-    fun getHello(req: ServerRequest) = ok() withBody HelloResponse("world")
+    internal fun getHello(req: ServerRequest) = ok() withBody HelloResponse("world")
 
-    fun getLocation(request: ServerRequest) =
+    internal fun getLocation(request: ServerRequest) =
             request.pathVariable("address").toMono()
                     .transform(this::buildResponse)
-                    .transform(this::serverResponse)
+                    .transform(this::serverResponse)!!
 
     private fun buildResponse(address: Mono<String>)
             = address.transform(geoLocationService::fromAddress).and(this::sunriseSunset, ::LocationResponse)
