@@ -6,7 +6,9 @@ This is an example of doing reactive MicroServices using spring 5 functional web
 This is a fork of the [original java version](https://github.com/LearningByExample/reactive-ms-example).
 
 [![Build Status](https://travis-ci.org/LearningByExample/KotlinReactiveMS.svg?branch=master)](https://travis-ci.org/LearningByExample/KotlinReactiveMS)
-[![Coverage Status](https://coveralls.io/repos/github/LearningByExample/KotlinReactiveMS/badge.svg?branch=master)](https://coveralls.io/github/LearningByExample/KotlinReactiveMS?branch=master)
+[![codecov](https://codecov.io/gh/LearningByExample/KotlinReactiveMS/branch/master/graph/badge.svg)](https://codecov.io/gh/LearningByExample/KotlinReactiveMS)
+
+_IntelliJ code coverage runner gives a 100%, unfortunately I've not managed to get the same results using codecov.io_
 
 ## W.I.P.
 There is much code to be done to match the original java implementation
