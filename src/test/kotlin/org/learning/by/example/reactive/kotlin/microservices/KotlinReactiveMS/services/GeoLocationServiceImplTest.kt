@@ -26,7 +26,7 @@ internal class GeoLocationServiceImplTest {
     private companion object {
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"
         const val GOOGLE_ADDRESS_IN_PARAMS = "?address=" + GOOGLE_ADDRESS
-        val GOOGLE_ADDRESS_MONO = Mono.just(GOOGLE_ADDRESS)!!
+        val GOOGLE_ADDRESS_MONO = GOOGLE_ADDRESS.toMono()
         const val GOOGLE_LAT = 37.4224082
         const val GOOGLE_LNG = -122.0856086
         const val OK_STATUS = "OK"
