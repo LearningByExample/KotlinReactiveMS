@@ -5,11 +5,11 @@ import com.natpryce.hamkrest.equalTo
 import com.nhaarman.mockito_kotlin.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GeoLocationNotFoundException
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetGeoLocationException
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetSunriseSunsetException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationRequest
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationResponse
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.*
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
+import reactor.core.publisher.Mono
 
 @UnitTest
 @DisplayName("ApiHandler Unit Tests")
@@ -39,6 +40,9 @@ private class ApiHandlerTests : BasicIntegrationTest() {
         private val GOOGLE_LOCATION_MONO = GOOGLE_LOCATION.toMono()
         private val SUNRISE_SUNSET = SunriseSunset(SUNRISE_TIME, SUNSET_TIME).toMono()
         private val GOOGLE_ADDRESS_REQUEST = LocationRequest(GOOGLE_ADDRESS).toMono()
+        private val LOCATION_NOT_FOUND : Mono<GeographicCoordinates> = GeoLocationNotFoundException(NOT_FOUND).toMono()
+        private val LOCATION_EXCEPTION : Mono<GeographicCoordinates> = GetGeoLocationException(CANT_GET_LOCATION).toMono()
+        private val SUNRISE_SUNSET_ERROR : Mono<SunriseSunset> = GetSunriseSunsetException(CANT_GET_SUNRISE_SUNSET).toMono()
     }
 
     @Autowired
@@ -147,6 +151,69 @@ private class ApiHandlerTests : BasicIntegrationTest() {
         val serverResponse = apiHandler.postLocation(serverRequest).block()
 
         verifyServerResponse(serverResponse)
+
+        reset(geoLocationService)
+        reset(sunriseSunsetService)
+    }
+
+    @Test
+    fun getLocationNotFoundTest(){
+
+        doReturn(LOCATION_NOT_FOUND).whenever(geoLocationService).fromAddress(any())
+        doReturn(SUNRISE_SUNSET).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
+
+        val serverRequest = mock<ServerRequest>()
+        doReturn(GOOGLE_ADDRESS).whenever(serverRequest).pathVariable(ADDRESS_VARIABLE)
+
+        val serverResponse = apiHandler.getLocation(serverRequest).block()
+
+        assert.that(serverResponse.statusCode(), equalTo(HttpStatus.NOT_FOUND))
+
+        val errorResponse : ErrorResponse = serverResponse.extractEntity()
+
+        assert.that(errorResponse.message, equalTo(NOT_FOUND))
+
+        reset(geoLocationService)
+        reset(sunriseSunsetService)
+    }
+
+    @Test
+    fun getLocationErrorSunriseSunsetTest(){
+
+        doReturn(GOOGLE_LOCATION_MONO).whenever(geoLocationService).fromAddress(any())
+        doReturn(SUNRISE_SUNSET_ERROR).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
+
+        val serverRequest = mock<ServerRequest>()
+        doReturn(GOOGLE_ADDRESS).whenever(serverRequest).pathVariable(ADDRESS_VARIABLE)
+
+        val serverResponse = apiHandler.getLocation(serverRequest).block()
+
+        assert.that(serverResponse.statusCode(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
+
+        val errorResponse : ErrorResponse = serverResponse.extractEntity()
+
+        assert.that(errorResponse.message, equalTo(CANT_GET_SUNRISE_SUNSET))
+
+        reset(geoLocationService)
+        reset(sunriseSunsetService)
+    }
+
+    @Test
+    fun getLocationBothServiceErrorTest(){
+
+        doReturn(LOCATION_EXCEPTION).whenever(geoLocationService).fromAddress(any())
+        doReturn(SUNRISE_SUNSET_ERROR).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
+
+        val serverRequest = mock<ServerRequest>()
+        doReturn(GOOGLE_ADDRESS).whenever(serverRequest).pathVariable(ADDRESS_VARIABLE)
+
+        val serverResponse = apiHandler.getLocation(serverRequest).block()
+
+        assert.that(serverResponse.statusCode(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
+
+        val errorResponse : ErrorResponse = serverResponse.extractEntity()
+
+        assert.that(errorResponse.message, equalTo(CANT_GET_LOCATION))
 
         reset(geoLocationService)
         reset(sunriseSunsetService)

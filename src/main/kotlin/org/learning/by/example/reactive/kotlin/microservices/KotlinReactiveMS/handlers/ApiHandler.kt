@@ -13,7 +13,8 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
 
-internal class ApiHandler(val geoLocationService: GeoLocationService, val sunriseSunsetService: SunriseSunsetService) {
+internal class ApiHandler(val geoLocationService: GeoLocationService, val sunriseSunsetService: SunriseSunsetService,
+                          val errorHandler: ErrorHandler) {
     private companion object {
         const val ADDRESS = "address"
     }
@@ -21,13 +22,15 @@ internal class ApiHandler(val geoLocationService: GeoLocationService, val sunris
     internal fun getLocation(request: ServerRequest) =
             request.pathVariable(ADDRESS).toMono()
                     .transform(this::buildResponse)
-                    .transform(this::serverResponse)!!
+                    .transform(this::serverResponse)
+                    .onErrorResume(errorHandler::throwableError)!!
 
     internal fun postLocation(request: ServerRequest) =
             request.extract<LocationRequest>()
                     .map(LocationRequest::address)
                     .transform(this::buildResponse)
-                    .transform(this::serverResponse)!!
+                    .transform(this::serverResponse)
+                    .onErrorResume(errorHandler::throwableError)!!
 
     internal fun buildResponse(address: Mono<String>) =
             address.transform(geoLocationService::fromAddress).and(this::sunriseSunset, ::LocationResponse)
@@ -35,6 +38,6 @@ internal class ApiHandler(val geoLocationService: GeoLocationService, val sunris
     internal fun sunriseSunset(geographicCoordinates: GeographicCoordinates) =
             geographicCoordinates.toMono().transform(sunriseSunsetService::fromGeographicCoordinates)
 
-    internal fun serverResponse(address: Mono<LocationResponse>): Mono<ServerResponse> =
-            address.flatMap { ok() withBody it }
+    internal fun serverResponse(locationResponseMono: Mono<LocationResponse>): Mono<ServerResponse> =
+            locationResponseMono.flatMap { ok() withBody it }
 }
