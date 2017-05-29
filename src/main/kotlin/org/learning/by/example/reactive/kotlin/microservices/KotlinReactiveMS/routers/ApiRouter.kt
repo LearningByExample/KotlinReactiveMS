@@ -5,16 +5,19 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
 
 
-internal class ApiRouter(val handler : ApiHandler) {
+internal class ApiRouter(val handler: ApiHandler) {
 
     private companion object {
         const private val API_PATH = "/api"
-        const private val HELLO_PATH = "/hello"
+        const val LOCATION_PATH = "/location"
+        const val ADDRESS_ARG = "/{address}"
+        const val LOCATION_WITH_ADDRESS_PATH = "$LOCATION_PATH$ADDRESS_ARG"
     }
 
     fun doRoute() = router {
         (accept(MediaType.APPLICATION_JSON_UTF8) and API_PATH).nest {
-            GET(HELLO_PATH, handler::getHello)
+            GET(LOCATION_WITH_ADDRESS_PATH, handler::getLocation)
+            POST(LOCATION_PATH, handler::postLocation)
         }
     }
 }

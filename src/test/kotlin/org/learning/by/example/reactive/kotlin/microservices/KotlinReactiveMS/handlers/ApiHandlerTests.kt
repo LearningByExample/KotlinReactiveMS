@@ -6,7 +6,10 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.*
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationRequest
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationResponse
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
@@ -46,20 +49,6 @@ private class ApiHandlerTests : BasicIntegrationTest() {
 
     @SpyBean
     lateinit private var sunriseSunsetService: SunriseSunsetService
-
-    @Test
-    fun apiHandlerTest() {
-
-        val serverRequest = mock<ServerRequest>()
-        val serverResponseMono = apiHandler.getHello(serverRequest)
-
-        serverResponseMono.subscribe {
-            assert.that(it.statusCode(), equalTo(HttpStatus.OK))
-
-            val helloResponse: HelloResponse = it.extractEntity()
-            assert.that(helloResponse.hello, equalTo("world"))
-        }
-    }
 
     @Test
     fun combineTest() {

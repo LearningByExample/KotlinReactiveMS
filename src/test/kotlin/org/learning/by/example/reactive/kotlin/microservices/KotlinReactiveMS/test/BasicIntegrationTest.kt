@@ -3,6 +3,7 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.t
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.RouterFunction
 import kotlin.reflect.KClass
 
@@ -21,6 +22,16 @@ internal abstract class BasicIntegrationTest {
     fun <T : Any> get(url: String, httpStatus: HttpStatus = HttpStatus.OK, type: KClass<T>) =
             webTestClient.get()
                     ?.uri(url)
+                    ?.accept(MediaType.APPLICATION_JSON_UTF8)
+                    ?.exchange()
+                    ?.expectStatus()?.isEqualTo(httpStatus)
+                    ?.expectBody(type.java)
+                    ?.returnResult()?.responseBody!!
+
+    fun <T : Any> post(url: String, value: Any = Unit ,httpStatus: HttpStatus = HttpStatus.OK, type: KClass<T>) =
+            webTestClient.post()
+                    ?.uri(url)
+                    ?.body(BodyInserters.fromObject(value))
                     ?.accept(MediaType.APPLICATION_JSON_UTF8)
                     ?.exchange()
                     ?.expectStatus()?.isEqualTo(httpStatus)
