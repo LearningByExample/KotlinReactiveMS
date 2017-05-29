@@ -1,6 +1,7 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.application
 
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ApiHandler
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ErrorHandler
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers.ApiRouter
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationServiceImpl
@@ -20,7 +21,10 @@ internal class ApplicationConfig {
             ApiHandler(geoLocationService, sunsetService)
 
     @Bean
-    internal fun apiRouter(apiHandler: ApiHandler) = ApiRouter(apiHandler)
+    internal fun errorHandler() = ErrorHandler()
+
+    @Bean
+    internal fun apiRouter(apiHandler: ApiHandler, errorHandler: ErrorHandler) = ApiRouter(apiHandler, errorHandler)
 
     @Bean
     internal fun apiRouterFunction(apiRouter: ApiRouter) = apiRouter.doRoute()
