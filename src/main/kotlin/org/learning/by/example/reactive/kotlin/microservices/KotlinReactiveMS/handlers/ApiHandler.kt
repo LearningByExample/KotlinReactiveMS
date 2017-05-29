@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono
 
 internal class ApiHandler(val geoLocationService: GeoLocationService, val sunriseSunsetService: SunriseSunsetService,
                           val errorHandler: ErrorHandler) {
+
     private companion object {
         const val ADDRESS = "address"
     }
