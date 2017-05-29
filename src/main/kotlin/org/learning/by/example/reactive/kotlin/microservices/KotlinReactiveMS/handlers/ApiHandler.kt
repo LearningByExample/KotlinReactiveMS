@@ -1,5 +1,6 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers
 
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.extract
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.withBody
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
@@ -26,7 +27,7 @@ internal class ApiHandler(val geoLocationService: GeoLocationService, val sunris
                     .transform(this::serverResponse)!!
 
     internal fun postLocation(request: ServerRequest) =
-            request.bodyToMono(LocationRequest::class.java)
+            request.extract<LocationRequest>()
                     .map(LocationRequest::address)
                     .transform(this::buildResponse)
                     .transform(this::serverResponse)!!
