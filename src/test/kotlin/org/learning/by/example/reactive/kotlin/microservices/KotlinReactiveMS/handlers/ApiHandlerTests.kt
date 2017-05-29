@@ -6,10 +6,7 @@ import com.nhaarman.mockito_kotlin.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.HelloResponse
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationResponse
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.*
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
@@ -28,8 +25,8 @@ private class ApiHandlerTests : BasicIntegrationTest() {
     private companion object {
         const val ADDRESS_VARIABLE = "address"
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"
-        const val SUNRISE_TIME = "12:55:17 PM"
-        const val SUNSET_TIME = "3:14:28 AM"
+        const val SUNRISE_TIME = "2017-05-21T12:53:56+00:00"
+        const val SUNSET_TIME = "2017-05-22T03:16:05+00:00"
         const val GOOGLE_LAT = 37.4224082
         const val GOOGLE_LNG = -122.0856086
         const val NOT_FOUND = "not found"
@@ -38,6 +35,7 @@ private class ApiHandlerTests : BasicIntegrationTest() {
         private val GOOGLE_LOCATION = GeographicCoordinates(GOOGLE_LAT, GOOGLE_LNG)
         private val GOOGLE_LOCATION_MONO = GOOGLE_LOCATION.toMono()
         private val SUNRISE_SUNSET = SunriseSunset(SUNRISE_TIME, SUNSET_TIME).toMono()
+        private val GOOGLE_ADDRESS_REQUEST = LocationRequest(GOOGLE_ADDRESS).toMono()
     }
 
     @Autowired
@@ -82,6 +80,23 @@ private class ApiHandlerTests : BasicIntegrationTest() {
                 assert.that(sunset, equalTo(SUNSET_TIME))
             }
         }
+    }
+
+    @Test
+    fun sunriseSunsetTest() {
+
+        doReturn(SUNRISE_SUNSET).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
+
+        val serverRequest = mock<ServerRequest>()
+        doReturn(GOOGLE_ADDRESS).whenever(serverRequest).pathVariable(ADDRESS_VARIABLE)
+
+        with(apiHandler.sunriseSunset(GOOGLE_LOCATION).block())
+        {
+            assert.that(sunrise, equalTo(SUNRISE_TIME))
+            assert.that(sunset, equalTo(SUNSET_TIME))
+        }
+
+        reset(sunriseSunsetService)
     }
 
     @Test
@@ -132,19 +147,19 @@ private class ApiHandlerTests : BasicIntegrationTest() {
     }
 
     @Test
-    fun sunriseSunsetTest() {
+    fun postLocationTest() {
 
+        doReturn(GOOGLE_LOCATION_MONO).whenever(geoLocationService).fromAddress(any())
         doReturn(SUNRISE_SUNSET).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
 
         val serverRequest = mock<ServerRequest>()
-        doReturn(GOOGLE_ADDRESS).whenever(serverRequest).pathVariable(ADDRESS_VARIABLE)
+        doReturn(GOOGLE_ADDRESS_REQUEST).whenever(serverRequest).bodyToMono(any<Class<LocationRequest>>())
 
-        with(apiHandler.sunriseSunset(GOOGLE_LOCATION).block())
-        {
-            assert.that(sunrise, equalTo(SUNRISE_TIME))
-            assert.that(sunset, equalTo(SUNSET_TIME))
-        }
+        val serverResponse = apiHandler.postLocation(serverRequest).block()
 
+        verifyServerResponse(serverResponse)
+
+        reset(geoLocationService)
         reset(sunriseSunsetService)
     }
 }
