@@ -19,8 +19,6 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
     companion object {
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"
         const val API_LOCATION = "/api/location"
-        const val API_BAD_URL = "/api/bad/url"
-        const val NOT_FOUND_MESSAGE = "not found"
     }
 
     @LocalServerPort
@@ -34,7 +32,7 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
         val locationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}", type = LocationResponse::class)
         assert.that(locationResponse.geographicCoordinates, !isNull())
     }
-    
+
     @Test
     fun postLocation() {
         val locationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS),
