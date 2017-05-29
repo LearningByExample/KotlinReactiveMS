@@ -51,7 +51,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun getMockingWebClientTest() {
-
         sunriseSunsetServiceImpl.webClient = mockWebClient(sunriseSunsetServiceImpl.webClient, SUNRISE_SUNSET_OK)
 
         val geoTimesResponse = (sunriseSunsetServiceImpl.endPoint + GOOGLE_LOCATION_IN_PARAMS).toMono()
@@ -66,7 +65,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun fromGeographicCoordinates() {
-
         doReturn(SUNRISE_SUNSET_OK).whenever(sunriseSunsetServiceImpl).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO.transform(sunriseSunsetServiceImpl::fromGeographicCoordinates).block()
@@ -79,7 +77,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun fromGeographicCoordinatesKO() {
-
         doReturn(SUNRISE_SUNSET_KO).whenever(sunriseSunsetServiceImpl).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
@@ -97,7 +94,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun fromGeographicCoordinatesEMPTY() {
-
         doReturn(SUNRISE_SUNSET_EMPTY).whenever(sunriseSunsetServiceImpl).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
@@ -115,7 +111,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun fromGeographicCoordinatesException() {
-
         doReturn(LOCATION_EXCEPTION).whenever(sunriseSunsetServiceImpl).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
@@ -133,7 +128,6 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun fromGeographicCoordinatesBigException() {
-
         doReturn(BIG_EXCEPTION).whenever(sunriseSunsetServiceImpl).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO

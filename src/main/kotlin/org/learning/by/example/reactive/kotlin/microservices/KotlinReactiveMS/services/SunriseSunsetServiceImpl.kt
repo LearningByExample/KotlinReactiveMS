@@ -27,10 +27,10 @@ open internal class SunriseSunsetServiceImpl(val endPoint: String, var webClient
                     .onErrorResume { GetSunriseSunsetException(ERROR_GETTING_DATA, it).toMono() }
                     .transform(this::createResult)!!
 
-    open internal fun buildUrl(geographicCoordinatesMono: Mono<GeographicCoordinates>) = geographicCoordinatesMono.flatMap {
-        (latitude, longitude) ->
-        "$endPoint?lat=$latitude&lng=$longitude&date=$TODAY_DATE&formatted=$NOT_FORMATTED".toMono()
-    }
+    open internal fun buildUrl(geographicCoordinatesMono: Mono<GeographicCoordinates>) =
+            geographicCoordinatesMono.flatMap { (latitude, longitude) ->
+                "$endPoint?lat=$latitude&lng=$longitude&date=$TODAY_DATE&formatted=$NOT_FORMATTED".toMono()
+            }
 
     open internal fun get(urlMono: Mono<String>) = urlMono.flatMap {
         webClient.get()

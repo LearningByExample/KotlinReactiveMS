@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono
 @DisplayName("UtilsExtensionsTests Unit Tests")
 private class UtilsExtensionsTests : BasicIntegrationTest() {
 
-
     private companion object {
         const val BAR = "BAR"
         const val FOO = "FOO"

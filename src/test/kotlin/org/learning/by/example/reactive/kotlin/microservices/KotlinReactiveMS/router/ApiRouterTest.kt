@@ -102,5 +102,4 @@ private class ApiRouterTest : BasicIntegrationTest() {
 
         assert.that(errorResponse.message, equalTo(NOT_FOUND))
     }
-
 }

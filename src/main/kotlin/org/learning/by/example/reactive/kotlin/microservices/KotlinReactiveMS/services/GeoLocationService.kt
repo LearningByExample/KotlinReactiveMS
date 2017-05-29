@@ -4,6 +4,5 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.mo
 import reactor.core.publisher.Mono
 
 internal interface GeoLocationService {
-
     fun fromAddress(addressMono: Mono<String>): Mono<GeographicCoordinates>
 }

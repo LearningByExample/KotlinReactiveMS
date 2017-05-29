@@ -202,4 +202,3 @@ internal class GeoLocationServiceImplTest {
         assert.that(url, isNull())
     }
 }
-
