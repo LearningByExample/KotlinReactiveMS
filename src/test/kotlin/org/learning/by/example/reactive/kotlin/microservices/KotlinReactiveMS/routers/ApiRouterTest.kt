@@ -1,4 +1,4 @@
-package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.router
+package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers
 
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.equalTo
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.*
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers.ApiRouter
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest

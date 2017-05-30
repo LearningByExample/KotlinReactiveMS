@@ -80,14 +80,13 @@ _All date and times are ISO 8601 UTC without summer time adjustment_
     - [/handlers](/src/main/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/handlers) : Handlers used by the routers.
     - [/services](/src/main/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/services) : Services for the business logic needed by handlers.
     - [/exceptions](/src/main/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/exceptions) : Businesses exceptions.
-    - [/model](/src/main/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/model) : POJOs.
+    - [/model](/src/main/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/model) : Data classes.
 - [test/kotlin](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS)
     - [/application](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/application) : Application system and unit tests.
     - [/extensions](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/extensions) : Extensions unit tests.
     - [/routers](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/routers) : Integration tests for routes.
     - [/handlers](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/handlers) : Unit tests for handlers.
     - [/services](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/services) : Unit tests for services.
-    - [/model](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/model) : POJOs used by the test.
     - [/test](/src/test/kotlin/org/learning/by/example/reactive/kotlin/microservices/KotlinReactiveMS/test) : Helpers and base classes for testing.
 
 
