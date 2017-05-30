@@ -3,6 +3,7 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.a
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ApiHandler
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ErrorHandler
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers.ApiRouter
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers.StaticRouter
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationServiceImpl
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
@@ -22,6 +23,12 @@ internal class ApplicationConfig {
 
     @Bean
     internal fun errorHandler() = ErrorHandler()
+
+    @Bean
+    internal fun staticRouter() = StaticRouter()
+
+    @Bean
+    internal fun staticRouterFunction(staticRouter: StaticRouter) = staticRouter.doRoute()
 
     @Bean
     internal fun apiRouter(apiHandler: ApiHandler, errorHandler: ErrorHandler) = ApiRouter(apiHandler, errorHandler)

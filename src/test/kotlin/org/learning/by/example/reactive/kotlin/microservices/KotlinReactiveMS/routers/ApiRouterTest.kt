@@ -57,7 +57,7 @@ private class ApiRouterTest : BasicIntegrationTest() {
         doReturn(GOOGLE_LOCATION_MONO).whenever(geoLocationService).fromAddress(any())
         doReturn(SUNRISE_SUNSET).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
 
-        val locationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}", type = LocationResponse::class)
+        val locationResponse : LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
         assert.that(locationResponse.geographicCoordinates, !isNull())
 
         reset(geoLocationService)
@@ -66,7 +66,7 @@ private class ApiRouterTest : BasicIntegrationTest() {
 
     @Test
     fun getLocationRouteNotFound() {
-        val errorResponse = get(url = API_BAD_URL, httpStatus = HttpStatus.NOT_FOUND, type = ErrorResponse::class)
+        val errorResponse : ErrorResponse = get(url = API_BAD_URL, httpStatus = HttpStatus.NOT_FOUND)
         assert.that(errorResponse.message, equalTo(NOT_FOUND))
     }
 
@@ -77,8 +77,7 @@ private class ApiRouterTest : BasicIntegrationTest() {
         doReturn(GOOGLE_LOCATION_MONO).whenever(geoLocationService).fromAddress(any())
         doReturn(SUNRISE_SUNSET).whenever(sunriseSunsetService).fromGeographicCoordinates(any())
 
-        val locationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS),
-                type = LocationResponse::class)
+        val locationResponse : LocationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS))
 
         assert.that(locationResponse.geographicCoordinates, !isNull())
 
@@ -88,17 +87,15 @@ private class ApiRouterTest : BasicIntegrationTest() {
 
     @Test
     fun postWrongObject() {
-        val errorResponse = post(url = API_LOCATION,httpStatus = HttpStatus.BAD_REQUEST , value = WrongObject(),
-                type = ErrorResponse::class)
-
+        val errorResponse : ErrorResponse = post(url = API_LOCATION,httpStatus = HttpStatus.BAD_REQUEST ,
+                value = WrongObject())
         assert.that(errorResponse.message, !isNull())
     }
 
     @Test
     fun postLocationRouteNotFound() {
-        val errorResponse = post(url = API_BAD_URL, httpStatus = HttpStatus.NOT_FOUND, value = LocationRequest(GOOGLE_ADDRESS),
-                type = ErrorResponse::class)
-
+        val errorResponse : ErrorResponse = post(url = API_BAD_URL, httpStatus = HttpStatus.NOT_FOUND,
+                value = LocationRequest(GOOGLE_ADDRESS))
         assert.that(errorResponse.message, equalTo(NOT_FOUND))
     }
 }

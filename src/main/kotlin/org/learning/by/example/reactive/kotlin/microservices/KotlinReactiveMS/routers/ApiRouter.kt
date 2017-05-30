@@ -2,7 +2,6 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.r
 
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ApiHandler
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ErrorHandler
-import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
 
@@ -19,16 +18,9 @@ internal class ApiRouter(val handler: ApiHandler, val errorHandler: ErrorHandler
 
     fun doRoute() = router {
         (accept(MediaType.APPLICATION_JSON_UTF8) and API_PATH).nest {
-
-            method(HttpMethod.GET).nest {
-                path(LOCATION_WITH_ADDRESS_PATH, handler::getLocation)
-            }
-
-            method(HttpMethod.POST).nest {
-                path(LOCATION_PATH, handler::postLocation)
-            }
-
-            path(ANY_PATH, errorHandler::notFound)
+            GET(LOCATION_WITH_ADDRESS_PATH).invoke(handler::getLocation)
+            POST(LOCATION_PATH).invoke(handler::postLocation)
+            path(ANY_PATH).invoke(errorHandler::notFound)
         }
     }
 }

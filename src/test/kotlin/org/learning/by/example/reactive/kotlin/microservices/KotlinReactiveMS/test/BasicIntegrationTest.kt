@@ -5,7 +5,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.RouterFunction
-import kotlin.reflect.KClass
 
 internal abstract class BasicIntegrationTest {
 
@@ -19,22 +18,23 @@ internal abstract class BasicIntegrationTest {
         this.webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:$port").build()
     }
 
-    fun <T : Any> get(url: String, httpStatus: HttpStatus = HttpStatus.OK, type: KClass<T>) =
+    inline fun <reified T : Any> get(url: String, mediaType: MediaType = MediaType.APPLICATION_JSON_UTF8,
+                                     httpStatus: HttpStatus = HttpStatus.OK) =
             webTestClient.get()
                     ?.uri(url)
-                    ?.accept(MediaType.APPLICATION_JSON_UTF8)
+                    ?.accept(mediaType)
                     ?.exchange()
                     ?.expectStatus()?.isEqualTo(httpStatus)
-                    ?.expectBody(type.java)
+                    ?.expectBody(T::class.java)
                     ?.returnResult()?.responseBody!!
 
-    fun <T : Any> post(url: String, value: Any = Unit ,httpStatus: HttpStatus = HttpStatus.OK, type: KClass<T>) =
+    inline fun <T : Any, reified K: Any> post(url: String, value: T, httpStatus: HttpStatus = HttpStatus.OK) =
             webTestClient.post()
                     ?.uri(url)
                     ?.body(BodyInserters.fromObject(value))
                     ?.accept(MediaType.APPLICATION_JSON_UTF8)
                     ?.exchange()
                     ?.expectStatus()?.isEqualTo(httpStatus)
-                    ?.expectBody(type.java)
+                    ?.expectBody(K::class.java)
                     ?.returnResult()?.responseBody!!
 }

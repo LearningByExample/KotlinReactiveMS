@@ -29,15 +29,13 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
 
     @Test
     fun getLocation() {
-        val locationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}", type = LocationResponse::class)
+        val locationResponse: LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
         assert.that(locationResponse.geographicCoordinates, !isNull())
     }
 
     @Test
     fun postLocation() {
-        val locationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS),
-                type = LocationResponse::class)
-
+        val locationResponse: LocationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS))
         assert.that(locationResponse.geographicCoordinates, !isNull())
     }
 

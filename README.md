@@ -26,7 +26,7 @@ This example cover several topics:
 - Functional programing.
 - Reactive types.
 - Router Functions.
-- ~~Static Web-Content~~.
+- Static Web-Content.
 - Creation on Reactive Java Services/Components.
 - Error handling in routes and services.
 - Reactive Web Client to consume external REST Services.
@@ -69,6 +69,8 @@ Both will produce something like:
 _All date and times are ISO 8601 UTC without summer time adjustment_
 
 ## API
+[![View in the embedded Swagger UI](https://avatars0.githubusercontent.com/u/7658037?v=3&s=20) View in the embedded Swagger UI](http://localhost:8080/index.html)
+
 [![Run in Postman](https://lh4.googleusercontent.com/Dfqo9J42K7-xRvHW3GVpTU7YCa_zpy3kEDSIlKjpd2RAvVlNfZe5pn8Swaa4TgCWNTuOJOAfwWY=s20) Run in Postman](https://app.getpostman.com/run-collection/498aea143dc572212f17)
 
 ## Project Structure
