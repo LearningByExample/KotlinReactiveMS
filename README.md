@@ -1,14 +1,14 @@
 ## Kotlin Reactive Micro Services Example
 
+[![Build Status](https://travis-ci.org/LearningByExample/KotlinReactiveMS.svg?branch=master)](https://travis-ci.org/LearningByExample/KotlinReactiveMS)
+[![codecov](https://codecov.io/gh/LearningByExample/KotlinReactiveMS/branch/master/graph/badge.svg)](https://codecov.io/gh/LearningByExample/KotlinReactiveMS)
+
+_IntelliJ code coverage runner gives a 100%, unfortunately I've not managed to get the same results using codecov.io and JaCoCo_
+
 ## info
 This is an example of doing reactive MicroServices using spring 5 functional web framework and spring boot 2 using Kotlin.
 
 This is a fork of the [original java version](https://github.com/LearningByExample/reactive-ms-example).
-
-[![Build Status](https://travis-ci.org/LearningByExample/KotlinReactiveMS.svg?branch=master)](https://travis-ci.org/LearningByExample/KotlinReactiveMS)
-[![codecov](https://codecov.io/gh/LearningByExample/KotlinReactiveMS/branch/master/graph/badge.svg)](https://codecov.io/gh/LearningByExample/KotlinReactiveMS)
-
-_IntelliJ code coverage runner gives a 100%, unfortunately I've not managed to get the same results using codecov.io_
 
 This service provide and API that will get the geo location and the sunrise and sunset times from an address.
 
