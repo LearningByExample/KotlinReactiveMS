@@ -84,36 +84,12 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
     }
 
     @Test
-    fun extractWithArgTest() {
-        val serverRequest = mock<ServerRequest>()
-        doReturn(Foo().toMono()).whenever(serverRequest).bodyToMono(any<Class<Any>>())
-
-        val result = serverRequest.extract(Foo::class).block()
-
-        assert.that(result, isA<Foo>())
-        assert.that(result.bar, equalTo(BAR))
-    }
-
-    @Test
     fun extractErrorTest() {
         val serverRequest = mock<ServerRequest>()
         doReturn(Bar().toMono()).whenever(serverRequest).bodyToMono(any<Class<Any>>())
 
         try {
             val result = serverRequest.extract<Foo>().block()
-            assert.that(result, isNull())
-        } catch (throwable: Throwable) {
-            assert.that(throwable, isA<ClassCastException>())
-        }
-    }
-
-    @Test
-    fun extractWithArgErrorTest() {
-        val serverRequest = mock<ServerRequest>()
-        doReturn(Bar().toMono()).whenever(serverRequest).bodyToMono(any<Class<Any>>())
-
-        try {
-            val result = serverRequest.extract(Foo::class).block()
             assert.that(result, isNull())
         } catch (throwable: Throwable) {
             assert.that(throwable, isA<ClassCastException>())

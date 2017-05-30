@@ -20,7 +20,7 @@ internal class ErrorHandler {
     }
 
     fun notFound(request: ServerRequest) = PathNotFoundException(NOT_FOUND).toMono<Throwable>()
-            .transform(this::getResponse)
+            .transform(this::getResponse)!!
 
     fun throwableError(throwable: Throwable): Mono<ServerResponse> {
         logger.error(ERROR_RAISED, throwable)
