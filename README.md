@@ -38,9 +38,6 @@ Includes and in depth look to testing using JUnit5:
 - BDD style assertions.
 - Test tags with maven profiles.
 
-## W.I.P.
-There is much code to be done to match the original java implementation
-
 ## Sample requests
 
 Get from address
