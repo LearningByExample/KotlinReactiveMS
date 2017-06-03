@@ -18,9 +18,9 @@ internal class ApiRouter(val handler: ApiHandler, val errorHandler: ErrorHandler
 
     fun doRoute() = router {
         (accept(MediaType.APPLICATION_JSON_UTF8) and API_PATH).nest {
-            GET(LOCATION_WITH_ADDRESS_PATH).invoke(handler::getLocation)
-            POST(LOCATION_PATH).invoke(handler::postLocation)
-            path(ANY_PATH).invoke(errorHandler::notFound)
+            GET(LOCATION_WITH_ADDRESS_PATH)(handler::getLocation)
+            POST(LOCATION_PATH)(handler::postLocation)
+            path(ANY_PATH)(errorHandler::notFound)
         }
     }
 }

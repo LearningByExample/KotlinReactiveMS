@@ -95,4 +95,12 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
             assert.that(throwable, isA<ClassCastException>())
         }
     }
+
+    @Test
+    fun getLoggerTest(){
+        val logger = getLogger<UtilsExtensionsTests>()
+        assert.that(logger, !isNull())
+        assert.that(logger, isA<org.slf4j.Logger>())
+        assert.that(logger.name, equalTo(UtilsExtensionsTests::class.qualifiedName))
+    }
 }

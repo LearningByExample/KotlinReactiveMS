@@ -31,8 +31,6 @@ internal class ThrowableTranslator private constructor(throwable: Throwable) {
             }
 
     companion object Translate {
-        fun <T : Throwable> throwable(throwable: Mono<T>): Mono<ThrowableTranslator> {
-            return throwable.map(::ThrowableTranslator)
-        }
+        fun <T : Throwable> throwable(throwable: Mono<T>) = throwable.map(::ThrowableTranslator)!!
     }
 }
