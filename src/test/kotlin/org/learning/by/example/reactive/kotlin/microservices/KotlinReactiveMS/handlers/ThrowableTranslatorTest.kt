@@ -14,7 +14,7 @@ import kotlin.reflect.full.primaryConstructor
 
 @UnitTest
 @DisplayName("ThrowableTranslator Unit Tests")
-internal class ThrowableTranslatorTest : BasicIntegrationTest() {
+private class ThrowableTranslatorTest : BasicIntegrationTest() {
 
     private inline fun <reified T : Throwable> createException(cause: Throwable? = null) =
             T::class.primaryConstructor?.call("", cause)!!

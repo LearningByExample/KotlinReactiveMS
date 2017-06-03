@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 
 @UnitTest
 @DisplayName("ErrorHandler Unit Tests")
-internal class ErrorHandlerTest : BasicIntegrationTest() {
+private class ErrorHandlerTest : BasicIntegrationTest() {
 
     companion object {
         const val NOT_FOUND = "not found"

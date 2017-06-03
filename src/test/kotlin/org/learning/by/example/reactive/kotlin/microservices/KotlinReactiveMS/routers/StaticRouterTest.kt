@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 @IntegrationTest
 @DisplayName("StaticRouter Integration Tests")
-internal class StaticRouterTest : BasicIntegrationTest() {
+private class StaticRouterTest : BasicIntegrationTest() {
 
     companion object {
         private val STATIC_PATH = "/index.html"

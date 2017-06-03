@@ -19,7 +19,7 @@ import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("GeoLocationServiceImpl Unit Tests")
-internal class GeoLocationServiceImplTest {
+private class GeoLocationServiceImplTest {
 
     private companion object {
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"

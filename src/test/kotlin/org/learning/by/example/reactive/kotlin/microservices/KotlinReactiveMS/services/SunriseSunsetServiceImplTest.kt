@@ -19,7 +19,7 @@ import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("SunriseSunsetServiceImplUnit Tests")
-internal class SunriseSunsetServiceImplTest {
+private class SunriseSunsetServiceImplTest {
 
     private companion object {
         const val STATUS_OK = "OK"

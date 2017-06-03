@@ -20,7 +20,7 @@ import reactor.core.publisher.toMono
 
 @IntegrationTest
 @DisplayName("MainRouter Integration Tests")
-internal class MainRouterTest  : BasicIntegrationTest() {
+private class MainRouterTest  : BasicIntegrationTest() {
 
     companion object {
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"
