@@ -32,16 +32,20 @@ open internal class SunriseSunsetServiceImpl(val endPoint: String, var webClient
                 "$endPoint?lat=$latitude&lng=$longitude&date=$TODAY_DATE&formatted=$NOT_FORMATTED".toMono()
             }
 
-    open internal fun get(urlMono: Mono<String>) = urlMono.flatMap {
-        webClient.get()
-                .uri(it)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .flatMap { it.bodyToMono(GeoTimesResponse::class.java) }
-    }!!
+    open internal fun get(urlMono: Mono<String>) =
+            urlMono.flatMap {
+                webClient.get()
+                        .uri(it)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .exchange()
+                        .flatMap { it.bodyToMono(GeoTimesResponse::class.java) }
+            }!!
 
-    open internal fun createResult(geoTimesResponseMono: Mono<GeoTimesResponse>) = geoTimesResponseMono.flatMap {
-        if (it.status == STATUS_OK) with(it.results) { SunriseSunset(sunrise, sunset).toMono() }
-        else GetSunriseSunsetException(SUNRISE_RESULT_NOT_OK).toMono()
-    }
+    open internal fun createResult(geoTimesResponseMono: Mono<GeoTimesResponse>) =
+            geoTimesResponseMono.flatMap {
+                with(it){
+                    if (status == STATUS_OK) with(results) { SunriseSunset(sunrise, sunset).toMono() }
+                    else GetSunriseSunsetException(SUNRISE_RESULT_NOT_OK).toMono()
+                }
+            }
 }

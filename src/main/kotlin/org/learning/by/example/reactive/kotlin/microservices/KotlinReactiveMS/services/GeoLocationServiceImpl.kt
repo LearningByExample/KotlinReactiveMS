@@ -45,10 +45,12 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
 
     open internal fun geometryLocation(geoLocationResponseMono: Mono<GeoLocationResponse>) =
             geoLocationResponseMono.flatMap {
-                when (it.status) {
-                    OK_STATUS -> with(it.results[0].geometry.location) { GeographicCoordinates(lat, lng).toMono() }
-                    ZERO_RESULTS -> GeoLocationNotFoundException(ADDRESS_NOT_FOUND).toMono()
-                    else -> GetGeoLocationException(ERROR_GETTING_LOCATION).toMono()
+                with(it) {
+                    when (status) {
+                        OK_STATUS -> with(results[0].geometry.location) { GeographicCoordinates(lat, lng).toMono() }
+                        ZERO_RESULTS -> GeoLocationNotFoundException(ADDRESS_NOT_FOUND).toMono()
+                        else -> GetGeoLocationException(ERROR_GETTING_LOCATION).toMono()
+                    }
                 }
             }
 }
