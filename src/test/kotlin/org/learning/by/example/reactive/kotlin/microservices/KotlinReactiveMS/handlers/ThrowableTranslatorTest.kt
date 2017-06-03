@@ -1,7 +1,6 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
+import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.*
@@ -10,6 +9,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.http.HttpStatus
 import reactor.core.publisher.Mono
+import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
 @UnitTest
@@ -22,37 +22,55 @@ internal class ThrowableTranslatorTest : BasicIntegrationTest() {
     private inline fun <reified T : Throwable, reified K : Throwable> createExceptionWithCause() =
             createException<T>(createException<K>())
 
-    private fun Throwable.httpStatus() = Mono.just(this).transform(Translate::throwable)
-            .map { it.httpStatus }.block()
-    
+    private var <T : Throwable> T.httpStatus: HttpStatus
+        get() = Mono.just(this).transform(Translate::throwable).map { it.httpStatus }.block()
+        set(value) {
+            this.httpStatus = HttpStatus.I_AM_A_TEAPOT
+        }
+
+    private infix fun Throwable.`should translate to`(theStatus: HttpStatus) {
+        this.httpStatus shouldEqual theStatus
+    }
+
+    @Suppress("unused")
+    private inline infix fun <reified T : Throwable> KClass<T>.`translates to`(theStatus: HttpStatus) {
+        createException<T>() `should translate to` theStatus
+    }
+
+    @Suppress("unused", "UNUSED_PARAMETER")
+    private inline infix fun <reified T : Throwable, reified K : Throwable> KClass<T>.withCause(otherClass: KClass<K>) =
+            createExceptionWithCause<T, K>()
+
     @Test
     fun translateGeoLocationNotFoundExceptionTest() {
-        assert.that(createException<GeoLocationNotFoundException>().httpStatus(), equalTo(HttpStatus.NOT_FOUND))
+        GeoLocationNotFoundException::class `translates to` HttpStatus.NOT_FOUND
     }
 
     @Test
     fun translateGetGeoLocationExceptionTest() {
-        assert.that(createException<GetGeoLocationException>().httpStatus(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
+        GetGeoLocationException::class `translates to` HttpStatus.INTERNAL_SERVER_ERROR
     }
 
     @Test
     fun translateGetSunriseSunsetExceptionTest() {
-        assert.that(createException<GetSunriseSunsetException>().httpStatus(), equalTo(HttpStatus.INTERNAL_SERVER_ERROR))
+        GetSunriseSunsetException::class `translates to` HttpStatus.INTERNAL_SERVER_ERROR
     }
 
     @Test
     fun translateInvalidParametersExceptionTest() {
-        assert.that(createException<InvalidParametersException>().httpStatus(), equalTo(HttpStatus.BAD_REQUEST))
-    }
-
-    @Test
-    fun translateWithCauseTest() {
-        assert.that(createExceptionWithCause<GetGeoLocationException, InvalidParametersException>().httpStatus(),
-                equalTo(HttpStatus.BAD_REQUEST))
+        InvalidParametersException::class `translates to` HttpStatus.BAD_REQUEST
     }
 
     @Test
     fun translatePathNotFoundExceptionTest() {
-        assert.that(createException<PathNotFoundException>().httpStatus(), equalTo(HttpStatus.NOT_FOUND))
+        PathNotFoundException::class `translates to` HttpStatus.NOT_FOUND
     }
+
+    @Test
+    fun translateWithCauseTest() {
+        GetGeoLocationException::class withCause InvalidParametersException::class `should translate to`
+                HttpStatus.BAD_REQUEST
+    }
+
+
 }
