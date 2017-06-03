@@ -1,9 +1,9 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.isA
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import org.amshove.kluent.`should be instance of`
+import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should equal`
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GeoLocationNotFoundException
@@ -11,9 +11,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.ex
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.InvalidParametersException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoLocationResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.getMonoFromJsonPath
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.isNull
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.mockWebClient
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.*
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.boot.test.mock.mockito.SpyBean
 import reactor.core.publisher.Mono
@@ -49,156 +47,116 @@ internal class GeoLocationServiceImplTest {
 
     @Test
     fun getMockingWebClientTest() {
-
-        geoLocationServiceImpl.webClient = mockWebClient(geoLocationServiceImpl.webClient, LOCATION_OK)
+        geoLocationServiceImpl.webClient = geoLocationServiceImpl.webClient `with mock response` LOCATION_OK
 
         val geoLocationResponse = GOOGLE_ADDRESS_MONO
                 .transform(geoLocationServiceImpl::buildUrl)
                 .transform(geoLocationServiceImpl::get).block()
+        geoLocationResponse.status `should equal` OK_STATUS
 
-        assert.that(geoLocationResponse.status, equalTo(OK_STATUS))
-
-        reset(geoLocationServiceImpl.webClient)
+        geoLocationServiceImpl.webClient reset `mock responses`
     }
 
     @Test
     fun fromAddressTest() {
-
-        doReturn(LOCATION_OK).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` LOCATION_OK).get(any())
 
         val geographicCoordinates = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO).block()
+        geographicCoordinates `should equal` GeographicCoordinates(GOOGLE_LAT, GOOGLE_LNG)
 
-        assert.that(geographicCoordinates, equalTo(GeographicCoordinates(GOOGLE_LAT, GOOGLE_LNG)))
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromAddressNotFoundTest() {
 
-        doReturn(LOCATION_NOT_FOUND).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` LOCATION_NOT_FOUND).get(any())
 
         val geographicCoordinates: GeographicCoordinates? = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO)
                 .onErrorResume {
-                    assert.that(it, isA<GeoLocationNotFoundException>())
+                    it `should be instance of` GeoLocationNotFoundException::class
                     Mono.empty()
                 }
                 .block()
+        geographicCoordinates `should be` null
 
-        assert.that(geographicCoordinates, isNull())
-
-        verify(geoLocationServiceImpl, times(1)).fromAddress(any())
-        verify(geoLocationServiceImpl, times(1)).get(any())
-        verify(geoLocationServiceImpl, times(1)).buildUrl(any())
-        verify(geoLocationServiceImpl, times(1)).geometryLocation(any())
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromAddressEmptyTest() {
-
-        doReturn(LOCATION_EMPTY).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` LOCATION_EMPTY).get(any())
 
         val geographicCoordinates: GeographicCoordinates? = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO)
                 .onErrorResume {
-                    assert.that(it, isA<GetGeoLocationException>())
+                    it `should be instance of` GetGeoLocationException::class
                     Mono.empty()
                 }
                 .block()
+        geographicCoordinates `should be` null
 
-        assert.that(geographicCoordinates, isNull())
-
-        verify(geoLocationServiceImpl, times(1)).fromAddress(any())
-        verify(geoLocationServiceImpl, times(1)).get(any())
-        verify(geoLocationServiceImpl, times(1)).buildUrl(any())
-        verify(geoLocationServiceImpl, times(1)).geometryLocation(any())
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
 
     @Test
     fun fromAddressWrongStatusTest() {
-
-        doReturn(LOCATION_WRONG_STATUS).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` LOCATION_WRONG_STATUS).get(any())
 
         val geographicCoordinates: GeographicCoordinates? = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO)
                 .onErrorResume {
-                    assert.that(it, isA<GetGeoLocationException>())
+                    it `should be instance of` GetGeoLocationException::class
                     Mono.empty()
                 }
                 .block()
+        geographicCoordinates `should be` null
 
-        assert.that(geographicCoordinates, isNull())
-
-        verify(geoLocationServiceImpl, times(1)).fromAddress(any())
-        verify(geoLocationServiceImpl, times(1)).get(any())
-        verify(geoLocationServiceImpl, times(1)).buildUrl(any())
-        verify(geoLocationServiceImpl, times(1)).geometryLocation(any())
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromAddressExceptionTest() {
-
-        doReturn(LOCATION_EXCEPTION).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` LOCATION_EXCEPTION).get(any())
 
         val geographicCoordinates: GeographicCoordinates? = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO)
                 .onErrorResume {
-                    assert.that(it, isA<GetGeoLocationException>())
+                    it `should be instance of` GetGeoLocationException::class
                     Mono.empty()
                 }
                 .block()
+        geographicCoordinates `should be` null
 
-        assert.that(geographicCoordinates, isNull())
-
-        verify(geoLocationServiceImpl, times(1)).fromAddress(any())
-        verify(geoLocationServiceImpl, times(1)).get(any())
-        verify(geoLocationServiceImpl, times(1)).buildUrl(any())
-        verify(geoLocationServiceImpl, times(1)).geometryLocation(any())
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromAddressBigExceptionTest() {
-
-        doReturn(BIG_EXCEPTION).whenever(geoLocationServiceImpl).get(any())
+        (geoLocationServiceImpl `will return` BIG_EXCEPTION).get(any())
 
         val geographicCoordinates: GeographicCoordinates? = geoLocationServiceImpl.fromAddress(GOOGLE_ADDRESS_MONO)
                 .onErrorResume {
-                    assert.that(it, isA<GetGeoLocationException>())
+                    it `should be instance of` GetGeoLocationException::class
                     Mono.empty()
                 }
                 .block()
+        geographicCoordinates `should be` null
 
-        assert.that(geographicCoordinates, isNull())
-
-        verify(geoLocationServiceImpl, times(1)).fromAddress(any())
-        verify(geoLocationServiceImpl, times(1)).get(any())
-        verify(geoLocationServiceImpl, times(1)).buildUrl(any())
-        verify(geoLocationServiceImpl, times(1)).geometryLocation(any())
-
-        reset(geoLocationServiceImpl)
+        geoLocationServiceImpl reset `mock responses`
     }
 
 
     @Test
     fun buildUrlTest() {
         val url = GOOGLE_ADDRESS_MONO.transform(geoLocationServiceImpl::buildUrl).block()
-
-        assert.that(url, equalTo(geoLocationServiceImpl.endPoint + GOOGLE_ADDRESS_IN_PARAMS))
+        url `should equal` geoLocationServiceImpl.endPoint + GOOGLE_ADDRESS_IN_PARAMS
     }
 
     @Test
     fun buildUrlEmptyAddressTest() {
         val url = "".toMono().transform(geoLocationServiceImpl::buildUrl).onErrorResume {
-            assert.that(it, isA<InvalidParametersException>())
+            it `should be instance of` InvalidParametersException::class
             Mono.empty()
         }.block()
-
-        assert.that(url, isNull())
+        url `should be` null
     }
 }
