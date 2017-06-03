@@ -1,13 +1,12 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.application
 
-import com.natpryce.hamkrest.assertion.assert
+import org.amshove.kluent.`should not be`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationRequest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.isNull
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.SystemTest
 import org.springframework.boot.web.server.LocalServerPort
 
@@ -30,13 +29,12 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
     @Test
     fun getLocation() {
         val locationResponse: LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
-        assert.that(locationResponse.geographicCoordinates, !isNull())
+        locationResponse.geographicCoordinates `should not be` null
     }
 
     @Test
     fun postLocation() {
         val locationResponse: LocationResponse = post(url = API_LOCATION, value = LocationRequest(GOOGLE_ADDRESS))
-        assert.that(locationResponse.geographicCoordinates, !isNull())
+        locationResponse.geographicCoordinates `should not be` null
     }
-
 }

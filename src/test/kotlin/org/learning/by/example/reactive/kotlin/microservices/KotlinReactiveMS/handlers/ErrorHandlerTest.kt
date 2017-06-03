@@ -1,8 +1,8 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
 import com.nhaarman.mockito_kotlin.mock
+import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should equal to`
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.PathNotFoundException
@@ -15,11 +15,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
-import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("ErrorHandler Unit Tests")
-internal class ErrorHandlerTest : BasicIntegrationTest() {
+private class ErrorHandlerTest : BasicIntegrationTest() {
 
     companion object {
         const val NOT_FOUND = "not found"
@@ -34,8 +33,8 @@ internal class ErrorHandlerTest : BasicIntegrationTest() {
 
     private fun checkResponse(httpStatus: HttpStatus, message: String): (ServerResponse) -> Unit = {
         with(it){
-            assert.that(statusCode(), equalTo(httpStatus))
-            assert.that(extractEntity<ErrorResponse>().message, equalTo(message))
+            statusCode() `should be` httpStatus
+            extractEntity<ErrorResponse>().message `should equal to` message
         }
     }
 
