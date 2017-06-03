@@ -3,12 +3,12 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.t
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.natpryce.hamkrest.Matcher
 import com.nhaarman.mockito_kotlin.*
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.EntityResponse
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")

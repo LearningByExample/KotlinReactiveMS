@@ -16,7 +16,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse.ok
-import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("UtilsExtensionsTests Unit Tests")
@@ -30,25 +30,6 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
     private data class Foo(val bar: String = BAR)
     private data class Bar(val foo: String = FOO)
 
-    @Test
-    fun toMonoTest() {
-
-        Foo().toMono().subscribe {
-            assert.that(it.bar, equalTo(BAR))
-        }
-    }
-
-    @Test
-    fun toMonoThrowableTest() {
-
-        val message: Mono<String> = RuntimeException(BAR).toMono()
-
-        message.onErrorResume {
-            assert.that(it, isA<RuntimeException>())
-            assert.that(it.message, equalTo(BAR))
-            Mono.empty()
-        }.block()
-    }
 
     @Test
     fun withBodyTest() {

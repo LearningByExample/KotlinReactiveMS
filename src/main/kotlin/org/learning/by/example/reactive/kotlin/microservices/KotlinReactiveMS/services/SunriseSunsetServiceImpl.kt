@@ -1,13 +1,13 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services
 
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetSunriseSunsetException
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoTimesResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 open internal class SunriseSunsetServiceImpl(val endPoint: String, var webClient: WebClient = WebClient.create())
     : SunriseSunsetService {

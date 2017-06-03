@@ -6,7 +6,6 @@ import com.nhaarman.mockito_kotlin.mock
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.PathNotFoundException
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.ErrorResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.extractEntity
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
+import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("ErrorHandler Unit Tests")
@@ -43,6 +44,6 @@ internal class ErrorHandlerTest : BasicIntegrationTest() {
             .subscribe(checkResponse(HttpStatus.NOT_FOUND, NOT_FOUND))!!
 
     @Test
-    fun getResponse() = PathNotFoundException(NOT_FOUND).toMono<Throwable>().transform(errorHandler::getResponse)
+    fun getResponse() = Mono.just(PathNotFoundException(NOT_FOUND)).transform(errorHandler::getResponse)
             .subscribe(checkResponse(HttpStatus.NOT_FOUND, NOT_FOUND))!!
 }

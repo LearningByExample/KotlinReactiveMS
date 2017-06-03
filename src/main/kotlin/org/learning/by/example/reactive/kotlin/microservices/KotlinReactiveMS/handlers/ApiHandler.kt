@@ -1,7 +1,6 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers
 
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.extract
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.withBody
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationRequest
@@ -12,6 +11,7 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 internal class ApiHandler(val geoLocationService: GeoLocationService, val sunriseSunsetService: SunriseSunsetService,
                           val errorHandler: ErrorHandler) {

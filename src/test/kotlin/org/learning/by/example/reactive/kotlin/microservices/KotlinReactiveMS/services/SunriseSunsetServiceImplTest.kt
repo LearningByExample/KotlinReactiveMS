@@ -12,7 +12,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetGeoLocationException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetSunriseSunsetException
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoTimesResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.getMonoFromJsonPath
@@ -21,6 +20,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.boot.test.mock.mockito.SpyBean
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("SunriseSunsetServiceImplUnit Tests")

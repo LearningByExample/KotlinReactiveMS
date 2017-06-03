@@ -9,7 +9,6 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.LocationResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
@@ -20,6 +19,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.IntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.SpyBean
+import reactor.core.publisher.toMono
 
 @IntegrationTest
 @DisplayName("MainRouter Integration Tests")

@@ -5,11 +5,11 @@ import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.*
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ThrowableTranslator.Translate
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.http.HttpStatus
+import reactor.core.publisher.Mono
 import kotlin.reflect.full.primaryConstructor
 
 @UnitTest
@@ -22,7 +22,7 @@ internal class ThrowableTranslatorTest : BasicIntegrationTest() {
     private inline fun <reified T : Throwable, reified K : Throwable> createExceptionWithCause() =
             createException<T>(createException<K>())
 
-    private fun Throwable.httpStatus() = this.toMono<Throwable>().transform(Translate::throwable)
+    private fun Throwable.httpStatus() = Mono.just(this).transform(Translate::throwable)
             .map { it.httpStatus }.block()
     
     @Test

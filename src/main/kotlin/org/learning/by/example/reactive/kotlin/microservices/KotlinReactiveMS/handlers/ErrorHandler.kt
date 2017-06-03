@@ -2,7 +2,6 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.h
 
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.PathNotFoundException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.getLogger
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.toMono
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions.withBody
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.handlers.ThrowableTranslator.Translate
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.ErrorResponse
@@ -21,11 +20,11 @@ internal class ErrorHandler {
 
     @Suppress("UNUSED_PARAMETER")
     fun notFound(request: ServerRequest) =
-            PathNotFoundException(NOT_FOUND).toMono<Throwable>().transform(this::getResponse)!!
+            Mono.just(PathNotFoundException(NOT_FOUND)).transform(this::getResponse)!!
 
     fun throwableError(throwable: Throwable): Mono<ServerResponse> {
         logger.error(ERROR_RAISED, throwable)
-        return throwable.toMono<Throwable>().transform(this::getResponse)
+        return Mono.just(throwable).transform(this::getResponse)
     }
 
     internal fun <T : Throwable> getResponse(monoError: Mono<T>): Mono<ServerResponse> =
