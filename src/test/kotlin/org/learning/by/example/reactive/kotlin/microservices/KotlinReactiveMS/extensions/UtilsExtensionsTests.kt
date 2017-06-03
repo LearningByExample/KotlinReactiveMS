@@ -1,17 +1,15 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.extensions
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.isA
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import org.amshove.kluent.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.`will return`
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.extractEntity
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.isNull
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -36,10 +34,10 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
         val serverResponseMono = ok() withBody Foo()
 
         serverResponseMono.subscribe {
-            assert.that(it.headers().contentType, equalTo(APPLICATION_JSON_UTF8))
+            it.headers().contentType `should equal` APPLICATION_JSON_UTF8
 
             val foo: Foo = it.extractEntity()
-            assert.that(foo.bar, equalTo(BAR))
+            foo.bar `should equal to` BAR
         }
     }
 
@@ -49,19 +47,18 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
 
         serverResponseMono.subscribe {
             val foo: Foo = it.extractEntity()
-            assert.that(foo.bar, equalTo(BAR))
+            foo.bar `should equal to` BAR
         }
     }
 
     @Test
     fun extractTest() {
         val serverRequest = mock<ServerRequest>()
-        doReturn(Foo().toMono()).whenever(serverRequest).bodyToMono(any<Class<Any>>())
+        (serverRequest `will return` Foo().toMono()).bodyToMono(any<Class<Any>>())
 
         val result = serverRequest.extract<Foo>().block()
-
-        assert.that(result, isA<Foo>())
-        assert.that(result.bar, equalTo(BAR))
+        result `should be instance of` Foo::class
+        result.bar `should equal to` BAR
     }
 
     @Test
@@ -69,19 +66,15 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
         val serverRequest = mock<ServerRequest>()
         doReturn(Bar().toMono()).whenever(serverRequest).bodyToMono(any<Class<Any>>())
 
-        try {
-            val result = serverRequest.extract<Foo>().block()
-            assert.that(result, isNull())
-        } catch (throwable: Throwable) {
-            assert.that(throwable, isA<ClassCastException>())
-        }
+        val extract = { serverRequest.extract<Foo>().block() }
+        extract `should throw` ClassCastException::class
     }
 
     @Test
-    fun getLoggerTest(){
+    fun getLoggerTest() {
         val logger = getLogger<UtilsExtensionsTests>()
-        assert.that(logger, !isNull())
-        assert.that(logger, isA<org.slf4j.Logger>())
-        assert.that(logger.name, equalTo(UtilsExtensionsTests::class.qualifiedName))
+        logger `should not be` null
+        logger `should be instance of` org.slf4j.Logger::class
+        logger.name `should equal to` UtilsExtensionsTests::class.qualifiedName!!
     }
 }
