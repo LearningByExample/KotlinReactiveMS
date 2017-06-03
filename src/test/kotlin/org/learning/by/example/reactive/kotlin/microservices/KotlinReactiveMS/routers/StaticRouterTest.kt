@@ -1,8 +1,8 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.isEmptyString
+import org.amshove.kluent.`should be greater than`
+import org.amshove.kluent.`should equal to`
+import org.amshove.kluent.`should not be`
 import org.jsoup.Jsoup
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -30,7 +30,8 @@ internal class StaticRouterTest : BasicIntegrationTest() {
     @Test
     fun doTest() {
         val html: String = get(STATIC_PATH)
-        assert.that(html, !isEmptyString)
+        html `should not be` null
+        html.length `should be greater than` 0
         verifyTitleIs(html, DEFAULT_TITLE)
     }
 
@@ -38,6 +39,6 @@ internal class StaticRouterTest : BasicIntegrationTest() {
         val doc = Jsoup.parse(html)
         val element = doc.head().getElementsByTag(TITLE_TAG).get(0)
         val text = element.text()
-        assert.that(text, equalTo(title))
+        text `should equal to` title
     }
 }
