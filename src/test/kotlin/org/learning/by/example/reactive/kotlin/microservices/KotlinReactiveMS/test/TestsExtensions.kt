@@ -24,6 +24,11 @@ fun isNull() = Matcher(Any?::isNullValue)
 infix fun <T, K> T.willReturn(value: K) = doReturn(value).whenever(this)!!
 infix fun <T, K> T.`will return`(value: K) = this willReturn value
 
+internal class MockResponseKeyword
+internal val `mock responses` = MockResponseKeyword()
+@Suppress("UNUSED_PARAMETER")
+internal infix fun<T:Any> T.reset(keyword : MockResponseKeyword) = reset(this)
+
 fun <T : Any> mockWebClient(webClient: WebClient, mono: Mono<T>?): WebClient {
 
     val client = spy(webClient)
@@ -40,3 +45,6 @@ fun <T : Any> mockWebClient(webClient: WebClient, mono: Mono<T>?): WebClient {
 
     return client
 }
+
+infix fun <T: WebClient,K : Any> T.withMockResponse(value : Mono<K>?) = mockWebClient(this, value)
+infix fun <T: WebClient,K : Any> T.`with mock response`(value : Mono<K>?) = this.withMockResponse(value)
