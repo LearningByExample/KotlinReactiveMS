@@ -1,6 +1,5 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.routers
 
-import com.natpryce.hamkrest.assertion.assert
 import com.nhaarman.mockito_kotlin.any
 import org.amshove.kluent.`should be greater than`
 import org.amshove.kluent.`should not be`
@@ -12,7 +11,10 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.mo
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.SunriseSunset
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.GeoLocationService
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services.SunriseSunsetService
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.*
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.BasicIntegrationTest
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.`mock responses`
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.`will return`
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.reset
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.IntegrationTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.SpyBean
@@ -59,7 +61,7 @@ private class MainRouterTest  : BasicIntegrationTest() {
         (sunriseSunsetService `will return` SUNRISE_SUNSET).fromGeographicCoordinates(any())
 
         val locationResponse : LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
-        assert.that(locationResponse.geographicCoordinates, !isNull())
+        locationResponse.geographicCoordinates `should not be` null
 
         geoLocationService reset `mock responses`
         sunriseSunsetService reset `mock responses`

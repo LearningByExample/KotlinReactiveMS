@@ -1,7 +1,6 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.natpryce.hamkrest.Matcher
 import com.nhaarman.mockito_kotlin.*
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
@@ -17,9 +16,6 @@ fun getResourceAsText(resource: String) = Unit.javaClass.getResource(resource).r
 fun <T : Any> String.getObjectFromJson(type: KClass<T>) = ObjectMapper().readValue(this, type.java)!!
 fun <T : Any> getMonoFromJsonPath(jsonPath: String, type: KClass<T>) = getResourceAsText(jsonPath)
         .getObjectFromJson(type).toMono()
-
-fun Any?.isNullValue(): Boolean = this == null
-fun isNull() = Matcher(Any?::isNullValue)
 
 infix fun <T, K> T.willReturn(value: K) = doReturn(value).whenever(this)!!
 infix fun <T, K> T.`will return`(value: K) = this willReturn value
