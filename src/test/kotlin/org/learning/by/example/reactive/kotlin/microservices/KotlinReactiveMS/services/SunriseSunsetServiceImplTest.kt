@@ -1,22 +1,17 @@
 package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.services
 
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.isA
-import com.natpryce.hamkrest.isNullOrEmptyString
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.reset
-import com.nhaarman.mockito_kotlin.whenever
+import org.amshove.kluent.`should be instance of`
+import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should equal to`
+import org.amshove.kluent.`should not be`
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetGeoLocationException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.GetSunriseSunsetException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoTimesResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.getMonoFromJsonPath
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.isNull
-import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.mockWebClient
+import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.*
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.test.tags.UnitTest
 import org.springframework.boot.test.mock.mockito.SpyBean
 import reactor.core.publisher.Mono
@@ -51,102 +46,100 @@ internal class SunriseSunsetServiceImplTest {
 
     @Test
     fun getMockingWebClientTest() {
-        sunriseSunsetServiceImpl.webClient = mockWebClient(sunriseSunsetServiceImpl.webClient, SUNRISE_SUNSET_OK)
+        sunriseSunsetServiceImpl.webClient = sunriseSunsetServiceImpl.webClient `with mock response` SUNRISE_SUNSET_OK
 
         val geoTimesResponse = (sunriseSunsetServiceImpl.endPoint + GOOGLE_LOCATION_IN_PARAMS).toMono()
                 .transform(sunriseSunsetServiceImpl::get).block()
+        with(geoTimesResponse) {
+            status `should equal to` STATUS_OK
+            with(results) {
+                sunrise `should equal to` SUNRISE_TIME
+                sunset `should equal to` SUNSET_TIME
+            }
+        }
 
-        assert.that(geoTimesResponse.status, equalTo(STATUS_OK))
-        assert.that(geoTimesResponse.results.sunrise, equalTo(SUNRISE_TIME))
-        assert.that(geoTimesResponse.results.sunset, equalTo(SUNSET_TIME))
-
-        reset(sunriseSunsetServiceImpl.webClient)
+        sunriseSunsetServiceImpl.webClient reset `mock responses`
     }
 
     @Test
     fun fromGeographicCoordinates() {
-        doReturn(SUNRISE_SUNSET_OK).whenever(sunriseSunsetServiceImpl).get(any())
+        (sunriseSunsetServiceImpl `will return` SUNRISE_SUNSET_OK).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO.transform(sunriseSunsetServiceImpl::fromGeographicCoordinates).block()
+        with(sunriseSunset){
+            sunrise `should not be` null
+            sunset `should not be` null
+        }
 
-        assert.that(sunriseSunset.sunrise, !isNullOrEmptyString)
-        assert.that(sunriseSunset.sunset, !isNullOrEmptyString)
-
-        reset(sunriseSunsetServiceImpl)
+        sunriseSunsetServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromGeographicCoordinatesKO() {
-        doReturn(SUNRISE_SUNSET_KO).whenever(sunriseSunsetServiceImpl).get(any())
+        (sunriseSunsetServiceImpl `will return` SUNRISE_SUNSET_KO).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
                 .transform(sunriseSunsetServiceImpl::fromGeographicCoordinates)
                 .onErrorResume {
-                    assert.that(it, isA<GetSunriseSunsetException>())
+                    it `should be instance of` GetSunriseSunsetException::class
                     Mono.empty()
                 }
                 .block()
+        sunriseSunset `should be` null
 
-        assert.that(sunriseSunset, isNull())
-
-        reset(sunriseSunsetServiceImpl)
+        sunriseSunsetServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromGeographicCoordinatesEMPTY() {
-        doReturn(SUNRISE_SUNSET_EMPTY).whenever(sunriseSunsetServiceImpl).get(any())
+        (sunriseSunsetServiceImpl `will return` SUNRISE_SUNSET_EMPTY).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
                 .transform(sunriseSunsetServiceImpl::fromGeographicCoordinates)
                 .onErrorResume {
-                    assert.that(it, isA<GetSunriseSunsetException>())
+                    it `should be instance of` GetSunriseSunsetException::class
                     Mono.empty()
                 }
                 .block()
+        sunriseSunset `should be` null
 
-        assert.that(sunriseSunset, isNull())
-
-        reset(sunriseSunsetServiceImpl)
+        sunriseSunsetServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromGeographicCoordinatesException() {
-        doReturn(LOCATION_EXCEPTION).whenever(sunriseSunsetServiceImpl).get(any())
+        (sunriseSunsetServiceImpl `will return` LOCATION_EXCEPTION).get(any())
 
         val sunriseSunset = GOOGLE_LOCATION_MONO
                 .transform(sunriseSunsetServiceImpl::fromGeographicCoordinates)
                 .onErrorResume {
-                    assert.that(it, isA<GetSunriseSunsetException>())
+                    it `should be instance of` GetSunriseSunsetException::class
                     Mono.empty()
                 }
                 .block()
+        sunriseSunset `should be` null
 
-        assert.that(sunriseSunset, isNull())
-
-        reset(sunriseSunsetServiceImpl)
+        sunriseSunsetServiceImpl reset `mock responses`
     }
 
     @Test
     fun fromGeographicCoordinatesBigException() {
-        doReturn(BIG_EXCEPTION).whenever(sunriseSunsetServiceImpl).get(any())
-
+        (sunriseSunsetServiceImpl `will return` BIG_EXCEPTION).get(any())
         val sunriseSunset = GOOGLE_LOCATION_MONO
                 .transform(sunriseSunsetServiceImpl::fromGeographicCoordinates)
                 .onErrorResume {
-                    assert.that(it, isA<GetSunriseSunsetException>())
+                    it `should be instance of` GetSunriseSunsetException::class
                     Mono.empty()
                 }
                 .block()
+        sunriseSunset `should be` null
 
-        assert.that(sunriseSunset, isNull())
-
-        reset(sunriseSunsetServiceImpl)
+        sunriseSunsetServiceImpl reset `mock responses`
     }
 
     @Test
     fun buildUrlTest() {
         val url = GOOGLE_LOCATION_MONO.transform(sunriseSunsetServiceImpl::buildUrl).block()
-
-        assert.that(url, equalTo(sunriseSunsetServiceImpl.endPoint + GOOGLE_LOCATION_IN_PARAMS))
+        url `should equal to` sunriseSunsetServiceImpl.endPoint + GOOGLE_LOCATION_IN_PARAMS
     }
 }
