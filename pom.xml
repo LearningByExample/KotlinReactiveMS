@@ -5,7 +5,7 @@
 
 	<groupId>org.learning.by.example.reactive.kotlin.microservices</groupId>
 	<artifactId>KotlinReactiveMS</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>KotlinReactiveMS</name>
