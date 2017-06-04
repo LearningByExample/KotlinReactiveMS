@@ -1,5 +1,5 @@
 ## Kotlin Reactive Micro Services Example
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](/LICENSE)
 [![Build Status](https://travis-ci.org/LearningByExample/KotlinReactiveMS.svg?branch=master)](https://travis-ci.org/LearningByExample/KotlinReactiveMS)
 [![codecov](https://codecov.io/gh/LearningByExample/KotlinReactiveMS/branch/master/graph/badge.svg)](https://codecov.io/gh/LearningByExample/KotlinReactiveMS)
 [![codebeat badge](https://codebeat.co/badges/de19292d-7dbf-49fd-b261-fb07b8522d3d)](https://codebeat.co/projects/github-com-learningbyexample-kotlinreactivems-master)
