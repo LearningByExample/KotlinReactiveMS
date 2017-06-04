@@ -25,7 +25,7 @@ private class ThrowableTranslatorTest : BasicIntegrationTest() {
     private var <T : Throwable> T.httpStatus: HttpStatus
         get() = Mono.just(this).transform(Translate::throwable).map { it.httpStatus }.block()
         set(value) {
-            this.httpStatus = HttpStatus.I_AM_A_TEAPOT
+            this.httpStatus = value
         }
 
     private infix fun Throwable.`should translate to`(theStatus: HttpStatus) {
