@@ -37,7 +37,7 @@ private class StaticRouterTest : BasicIntegrationTest() {
 
     private fun verifyTitleIs(html: String, title: String) {
         val doc = Jsoup.parse(html)
-        val element = doc.head().getElementsByTag(TITLE_TAG).get(0)
+        val element = doc.head().getElementsByTag(TITLE_TAG)[0]
         val text = element.text()
         text `should equal to` title
     }

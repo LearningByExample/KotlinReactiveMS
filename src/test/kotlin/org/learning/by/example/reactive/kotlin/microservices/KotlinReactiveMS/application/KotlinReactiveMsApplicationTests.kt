@@ -28,7 +28,7 @@ private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
 
     @Test
     fun getLocation() {
-        val locationResponse: LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
+        val locationResponse: LocationResponse = get(url = "$API_LOCATION/$GOOGLE_ADDRESS")
         locationResponse.geographicCoordinates `should not be` null
     }
 

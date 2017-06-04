@@ -56,7 +56,7 @@ private class ApiRouterTest : BasicIntegrationTest() {
         (geoLocationService `will return` GOOGLE_LOCATION_MONO).fromAddress(any())
         (sunriseSunsetService `will return` SUNRISE_SUNSET).fromGeographicCoordinates(any())
 
-        val locationResponse : LocationResponse = get(url = "${API_LOCATION}/${GOOGLE_ADDRESS}")
+        val locationResponse : LocationResponse = get(url = "$API_LOCATION/$GOOGLE_ADDRESS")
         locationResponse.geographicCoordinates `should not be` null
 
         geoLocationService reset `mock responses`

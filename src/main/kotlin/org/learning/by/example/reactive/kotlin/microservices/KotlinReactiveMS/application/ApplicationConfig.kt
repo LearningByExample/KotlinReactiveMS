@@ -42,6 +42,6 @@ internal class ApplicationConfig {
             = GeoLocationServiceImpl(endPoint)
 
     @Bean
-    internal fun gunriseSunsetService(@Value("\${SunriseSunsetServiceImpl.endPoint}") endPoint: String): SunriseSunsetService
+    internal fun sunriseSunsetService(@Value("\${SunriseSunsetServiceImpl.endPoint}") endPoint: String): SunriseSunsetService
             = SunriseSunsetServiceImpl(endPoint)
 }
