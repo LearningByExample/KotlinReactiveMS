@@ -5,8 +5,11 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.ex
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.exceptions.InvalidParametersException
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeoLocationResponse
 import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.model.GeographicCoordinates
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.toEntity
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 
@@ -18,6 +21,7 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
         const val OK_STATUS = "OK"
         const val ZERO_RESULTS = "ZERO_RESULTS"
         const val ERROR_GETTING_LOCATION = "error getting location"
+        const val ERROR_NOT_200 = "response was not 200"
         const val ADDRESS_NOT_FOUND = "address not found"
     }
 
@@ -39,13 +43,15 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
                 webClient.get()
                         .uri(it)
                         .accept(MediaType.APPLICATION_JSON)
-                        .exchange()
-                        .flatMap { it.bodyToMono(GeoLocationResponse::class.java) }
+                        .retrieve()
+                        .toEntity<GeoLocationResponse>()
             }
 
-    open internal fun geometryLocation(geoLocationResponseMono: Mono<GeoLocationResponse>) =
-            geoLocationResponseMono.flatMap {
-                with(it) {
+    open internal fun geometryLocation(responseMono: Mono<ResponseEntity<GeoLocationResponse>>) =
+            responseMono.flatMap {
+                if (it.statusCode != HttpStatus.OK)
+                    GetGeoLocationException(ERROR_NOT_200).toMono()
+                else with(it.body) {
                     when (status) {
                         OK_STATUS -> with(results[0].geometry.location) { GeographicCoordinates(lat, lng).toMono() }
                         ZERO_RESULTS -> GeoLocationNotFoundException(ADDRESS_NOT_FOUND).toMono()
