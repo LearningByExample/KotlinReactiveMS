@@ -41,8 +41,8 @@ open internal class SunriseSunsetServiceImpl(val endPoint: String, var webClient
                 webClient.get()
                         .uri(it)
                         .accept(MediaType.APPLICATION_JSON)
-                        .retrieve()
-                        .toEntity<GeoTimesResponse>()
+                        .exchange().flatMap { it.toEntity<GeoTimesResponse>() }
+
             }
 
     open internal fun createResult(responseMono: Mono<ResponseEntity<GeoTimesResponse>>) =

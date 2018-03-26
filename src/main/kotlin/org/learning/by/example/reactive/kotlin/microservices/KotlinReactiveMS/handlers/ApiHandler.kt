@@ -34,7 +34,7 @@ internal class ApiHandler(val geoLocationService: GeoLocationService, val sunris
                     .onErrorResume(errorHandler::throwableError)!!
 
     internal fun buildResponse(address: Mono<String>) =
-            address.transform(geoLocationService::fromAddress).and(this::sunriseSunset, ::LocationResponse)
+            address.transform(geoLocationService::fromAddress).zipWhen(this::sunriseSunset, ::LocationResponse)
 
     internal fun sunriseSunset(geographicCoordinates: GeographicCoordinates) =
             geographicCoordinates.toMono().transform(sunriseSunsetService::fromGeographicCoordinates)

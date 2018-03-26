@@ -54,9 +54,11 @@ private class ApiHandlerTest : BasicIntegrationTest() {
     @SpyBean
     lateinit private var sunriseSunsetService: SunriseSunsetService
 
+    fun getData(geographicCoordinates: GeographicCoordinates) = SUNRISE_SUNSET
+
     @Test
     fun combineTest() {
-        GOOGLE_LOCATION_MONO.and(SUNRISE_SUNSET, ::LocationResponse)
+        GOOGLE_LOCATION_MONO.zipWhen(this::getData, ::LocationResponse)
                 .subscribe(this::verifyLocationResponse)
     }
 
@@ -92,7 +94,7 @@ private class ApiHandlerTest : BasicIntegrationTest() {
 
     @Test
     fun serverResponseTest() {
-        GOOGLE_LOCATION_MONO.and(SUNRISE_SUNSET, ::LocationResponse)
+        GOOGLE_LOCATION_MONO.zipWhen(this::getData, ::LocationResponse)
                 .transform(apiHandler::serverResponse)
                 .subscribe(this::verifyServerResponse)
     }

@@ -43,8 +43,7 @@ open internal class GeoLocationServiceImpl(val endPoint: String, var webClient: 
                 webClient.get()
                         .uri(it)
                         .accept(MediaType.APPLICATION_JSON)
-                        .retrieve()
-                        .toEntity<GeoLocationResponse>()
+                        .exchange().flatMap { it.toEntity<GeoLocationResponse>() }
             }
 
     open internal fun geometryLocation(responseMono: Mono<ResponseEntity<GeoLocationResponse>>) =

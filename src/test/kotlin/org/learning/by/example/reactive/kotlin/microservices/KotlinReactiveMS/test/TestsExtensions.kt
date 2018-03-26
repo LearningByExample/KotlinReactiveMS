@@ -2,8 +2,10 @@ package org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.t
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.*
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.EntityResponse
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -31,17 +33,18 @@ internal infix fun <T : Any> T.reset(keyword: MockResponseKeyword) = reset(this)
 fun <T : Any> mockWebClient(webClient: WebClient, mono: Mono<ResponseEntity<T>>): WebClient {
 
     val client = spy(webClient)
-    val uriSpec = mock<WebClient.UriSpec<*>>()
+    val uriSpec = mock<WebClient.RequestHeadersUriSpec<*>>()
     (client `will return` uriSpec).get()
 
     val headerSpec = mock<WebClient.RequestHeadersSpec<*>>()
     (uriSpec `will return` headerSpec).uri(any<String>())
     (headerSpec `will return` headerSpec).accept(any())
 
-    val responseSpec = mock<WebClient.ResponseSpec>()
-    val value = mono.block()
-    (headerSpec `will return` responseSpec).retrieve()
-    (responseSpec `will return` mono).toEntity(value.body.javaClass)
+    val clientResponse = mock<ClientResponse>()
+    (clientResponse `will return` mono).toEntity(any<ParameterizedTypeReference<*>>())
+
+    val clientResponseMono = clientResponse.toMono()
+    (headerSpec `will return` clientResponseMono).exchange()
 
     return client
 }
