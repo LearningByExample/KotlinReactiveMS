@@ -17,8 +17,8 @@ import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.toMono
 
 @UnitTest
-@DisplayName("UtilsExtensionsTests Unit Tests")
-private class UtilsExtensionsTests : BasicIntegrationTest() {
+@DisplayName("UtilsExtensionsTest Unit Tests")
+private class UtilsExtensionsTest : BasicIntegrationTest() {
 
     private companion object {
         const val BAR = "BAR"
@@ -72,9 +72,9 @@ private class UtilsExtensionsTests : BasicIntegrationTest() {
 
     @Test
     fun getLoggerTest() {
-        val logger = getLogger<UtilsExtensionsTests>()
+        val logger = getLogger<UtilsExtensionsTest>()
         logger `should not be` null
         logger `should be instance of` org.slf4j.Logger::class
-        logger.name `should equal to` UtilsExtensionsTests::class.qualifiedName!!
+        logger.name `should equal to` UtilsExtensionsTest::class.qualifiedName!!
     }
 }

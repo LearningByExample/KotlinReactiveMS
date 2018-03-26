@@ -24,7 +24,7 @@ import reactor.core.publisher.toMono
 
 @UnitTest
 @DisplayName("ApiHandler Unit Tests")
-private class ApiHandlerTests : BasicIntegrationTest() {
+private class ApiHandlerTest : BasicIntegrationTest() {
 
     private companion object {
         const val ADDRESS_VARIABLE = "address"

@@ -13,7 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort
 
 @SystemTest
 @DisplayName("KotlinReactiveMsApplication System Tests")
-private class KotlinReactiveMsApplicationTests : BasicIntegrationTest() {
+private class KotlinReactiveMsApplicationTest : BasicIntegrationTest() {
 
     companion object {
         const val GOOGLE_ADDRESS = "1600 Amphitheatre Parkway, Mountain View, CA"

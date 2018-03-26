@@ -7,7 +7,7 @@ import org.learning.by.example.reactive.kotlin.microservices.KotlinReactiveMS.te
 
 @UnitTest
 @DisplayName("main Unit Tests")
-private class mainTests : BasicIntegrationTest() {
+private class mainTest : BasicIntegrationTest() {
 
     @Test
     fun mainTest() {

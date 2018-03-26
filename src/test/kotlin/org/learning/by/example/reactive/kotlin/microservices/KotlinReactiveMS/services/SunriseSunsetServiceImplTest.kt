@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
 
 @UnitTest
-@DisplayName("SunriseSunsetServiceImplUnit Tests")
+@DisplayName("SunriseSunsetServiceImpl Unit Tests")
 private class SunriseSunsetServiceImplTest {
 
     private companion object {
